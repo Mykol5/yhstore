@@ -446,18 +446,24 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { 
-    cartItems, 
+    cart, // CHANGED: cart instead of cartItems
     getTotalItems, 
     updateQuantity, 
     removeFromCart,
-    clearCart 
+    clearCart,
+    getGrandTotal // ADDED: Use this for total calculation
   } = useCart();
   
   const cartItemsCount = getTotalItems();
-  const totalAmount = cartItems.reduce((total, item) => {
-    const price = parseFloat(item.price.replace('£', ''));
-    return total + (price * item.quantity);
-  }, 0);
+  
+  // FIXED: Use cart instead of cartItems
+  // Option 1: Use getGrandTotal if available
+  const totalAmount = getGrandTotal ? getGrandTotal() : 
+    // Option 2: Calculate manually if getGrandTotal not available
+    cart.reduce((total, item) => {
+      const price = parseFloat(item.price.replace('£', ''));
+      return total + (price * item.quantity);
+    }, 0);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -477,7 +483,7 @@ export default function Navbar() {
 
   // Fixed: Handle increment with size/color variations
   const handleIncrement = (itemId: number, size?: string, color?: string) => {
-    const item = cartItems.find(item => 
+    const item = cart.find(item => 
       item.id === itemId && 
       item.size === size && 
       item.color === color
@@ -489,7 +495,7 @@ export default function Navbar() {
 
   // Fixed: Handle decrement with size/color variations
   const handleDecrement = (itemId: number, size?: string, color?: string) => {
-    const item = cartItems.find(item => 
+    const item = cart.find(item => 
       item.id === itemId && 
       item.size === size && 
       item.color === color
@@ -510,7 +516,7 @@ export default function Navbar() {
 
   const handleCheckout = () => {
     // Handle checkout logic here
-    console.log('Proceeding to checkout with items:', cartItems);
+    console.log('Proceeding to checkout with items:', cart);
     // You can redirect to checkout page or show checkout modal
     closeCart();
   };
@@ -586,19 +592,6 @@ export default function Navbar() {
                   </span>
                 )}
               </button>
-
-              {/* <Link
-                href="/login"
-                className="text-gray-300 hover:text-yellow-400 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-              >
-                Login
-              </Link>
-              <Link
-                href="/signup"
-                className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black px-6 py-2 rounded-full text-sm font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105"
-              >
-                Sign Up
-              </Link> */}
             </div>
 
             {/* Mobile menu button - Show on tablet and mobile (lg:hidden) */}
@@ -697,24 +690,6 @@ export default function Navbar() {
             >
               Shows
             </Link>
-            
-            {/* Auth buttons in mobile dropdown */}
-            {/* <div className="space-y-2 px-3 py-3 border-b border-yellow-500/10">
-              <Link
-                href="/login"
-                className="w-full text-gray-300 hover:text-yellow-400 block px-3 py-2 rounded-md text-base font-medium text-center transition-colors duration-200"
-                onClick={closeMobileMenu}
-              >
-                Login
-              </Link>
-              <Link
-                href="/signup"
-                className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-black block px-4 py-3 rounded-full text-base font-medium text-center hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105"
-                onClick={closeMobileMenu}
-              >
-                Sign Up
-              </Link>
-            </div> */}
           </div>
         </div>
       </nav>
@@ -746,7 +721,7 @@ export default function Navbar() {
 
               {/* Cart Items */}
               <div className="flex-1 overflow-y-auto p-6">
-                {cartItems.length === 0 ? (
+                {cart.length === 0 ? ( // CHANGED: cart.length instead of cartItems.length
                   // Empty Cart State
                   <div className="text-center py-12">
                     <svg className="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -764,7 +739,7 @@ export default function Navbar() {
                 ) : (
                   // Cart Items List - UPDATED: Show actual product images
                   <div className="space-y-4">
-                    {cartItems.map((item) => (
+                    {cart.map((item) => ( // CHANGED: cart.map instead of cartItems.map
                       <div key={getCartItemKey(item)} className="flex items-center space-x-4 p-4 bg-black/50 rounded-lg border border-yellow-500/20">
                         {/* Product Image - UPDATED: Use actual product image */}
                         <div className="w-16 h-16 bg-gradient-to-br from-yellow-500/10 to-yellow-600/20 rounded-lg flex items-center justify-center border border-yellow-500/20 overflow-hidden">
@@ -795,6 +770,12 @@ export default function Navbar() {
                             </p>
                           )}
                           <p className="text-yellow-400 font-bold text-sm">{item.price}</p>
+                          {/* Show item subtotal if quantity > 1 */}
+                          {item.quantity > 1 && (
+                            <p className="text-gray-500 text-xs">
+                              £{(parseFloat(item.price.replace('£', '')) / item.quantity).toFixed(2)} each
+                            </p>
+                          )}
                         </div>
 
                         {/* Quantity Controls */}
@@ -832,15 +813,43 @@ export default function Navbar() {
               </div>
 
               {/* Footer - Total and Checkout */}
-              {cartItems.length > 0 && (
+              {cart.length > 0 && ( // CHANGED: cart.length instead of cartItems.length
                 <div className="border-t border-yellow-500/20 p-6 space-y-4">
-                  {/* Total */}
-                  <div className="flex justify-between items-center text-white">
-                    <span className="text-lg font-semibold">Total:</span>
-                    <span className="text-2xl font-bold text-yellow-400">
-                      £{totalAmount.toFixed(2)}
-                    </span>
-                  </div>
+                  {/* Calculate subtotal, shipping, and total */}
+                  {(() => {
+                    const subtotal = cart.reduce((total, item) => {
+                      const price = parseFloat(item.price.replace('£', '')) / item.quantity;
+                      return total + (price * item.quantity);
+                    }, 0);
+                    
+                    const shippingTotal = cart.reduce((total, item) => {
+                      return total + (item.shipping || 0);
+                    }, 0);
+                    
+                    return (
+                      <>
+                        {/* Subtotal */}
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="text-gray-400">Subtotal:</span>
+                          <span className="text-white">£{subtotal.toFixed(2)}</span>
+                        </div>
+                        
+                        {/* Shipping */}
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="text-gray-400">Shipping:</span>
+                          <span className="text-yellow-400">£{shippingTotal.toFixed(2)}</span>
+                        </div>
+                        
+                        {/* Total */}
+                        <div className="flex justify-between items-center text-white pt-3 border-t border-yellow-500/20">
+                          <span className="text-lg font-semibold">Total:</span>
+                          <span className="text-2xl font-bold text-yellow-400">
+                            £{totalAmount.toFixed(2)}
+                          </span>
+                        </div>
+                      </>
+                    );
+                  })()}
 
                   {/* Checkout Button */}
                   <Checkout />
