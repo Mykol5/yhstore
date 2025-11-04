@@ -1,3 +1,99 @@
+import UpcomingSong from './components/UpcomingSong';
+
+export default function Home() {
+  return (
+    <div className="min-h-screen bg-black font-sans">
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div 
+          className="absolute inset-0 bg-black bg-opacity-70 z-0"
+          style={{
+            backgroundImage: 'url("/hero-bg.png")', // Replace with actual image path
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+        
+        {/* Gold Overlay Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-black to-yellow-600/5 z-10" />
+        
+        {/* Content */}
+        <div className="relative z-20 text-center px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+          {/* Logo/Brand */}
+          <div className="mb-8">
+            {/* <div className="text-yellow-400 text-4xl font-bold tracking-wider mb-2">
+              YH
+            </div> */}
+            <div className="w-20 h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 mx-auto rounded-full" />
+          </div>
+
+          {/* Main Heading */}
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight">
+            Experience{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">
+              Unique
+            </span>{' '}
+            Music Artistry
+          </h1>
+
+          {/* Sub Text */}
+          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+            Where soulful melodies meet contemporary vibes. Immerse yourself in a world of 
+            authentic sound and creative expression that transcends boundaries.
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <button className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black px-8 py-4 rounded-full font-semibold text-lg transform transition-all duration-300 hover:scale-105 hover:shadow-2xl flex items-center gap-3">
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+              Explore Music
+            </button>
+            
+            <button className="border-2 border-yellow-500 text-yellow-400 px-8 py-4 rounded-full font-semibold text-lg transform transition-all duration-300 hover:scale-105 hover:bg-yellow-500/10 hover:shadow-2xl">
+              View Story
+            </button>
+          </div>
+
+          {/* Stats/Highlights */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
+            <div className="text-center">
+              <div className="text-yellow-400 text-2xl font-bold mb-1">15K+</div>
+              <div className="text-gray-400 text-sm">Streams</div>
+            </div>
+            <div className="text-center">
+              <div className="text-yellow-400 text-2xl font-bold mb-1">50+</div>
+              <div className="text-gray-400 text-sm">Shows</div>
+            </div>
+            <div className="text-center">
+              <div className="text-yellow-400 text-2xl font-bold mb-1">2024</div>
+              <div className="text-gray-400 text-sm">New Era</div>
+            </div>
+          </div>
+
+          {/* Scroll Indicator */}
+          {/* <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div className="w-6 h-10 border-2 border-yellow-400 rounded-full flex justify-center">
+              <div className="w-1 h-3 bg-yellow-400 rounded-full mt-2" />
+            </div>
+          </div> */}
+        </div>
+      </section>
+
+      {/* Upcoming Song Section */}
+      <UpcomingSong />
+    </div>
+  );
+}
+
+
+
+
+
+
 // import Image from "next/image";
 
 // export default function Home() {
@@ -63,29 +159,4 @@
 //     </div>
 //   );
 // }
-
-
-import UpcomingSong from './components/UpcomingSong';
-
-export default function Home() {
-  return (
-    <div className="min-h-screen bg-zinc-50 font-sans dark:bg-black">
-      <main className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-5xl font-bold text-black dark:text-white mb-6">
-            Coming Soon
-          </h1>
-          <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-md">
-            Our website is currently under development. 
-            We'll be here soon with our new awesome site.
-          </p>
-          <div className="mt-8 w-64 h-1 bg-gray-300 dark:bg-gray-700 rounded-full mx-auto overflow-hidden">
-            <div className="h-full bg-black dark:bg-white w-3/4 animate-pulse"></div>
-          </div>
-        </div>
-      </main>
-
-      <UpcomingSong />
-    </div>
-  );
-}
+// }
