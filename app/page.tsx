@@ -596,7 +596,7 @@ function MerchSection() {
       </section>
 
       {/* Upcoming Song Section */}
-      <UpcomingSong />
+     
     </div>
   );
 }
