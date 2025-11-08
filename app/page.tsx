@@ -95,7 +95,8 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import Image from 'next/image';
 import { useCart } from './context/CartContext';
 
 interface Product {
@@ -110,17 +111,17 @@ interface Product {
   colors?: string[];
 }
 
-
 export default function Home() {
   const [isSignedUp, setIsSignedUp] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     age: '',
-    location: ''
+    location: '',
+    country: ''
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -142,32 +143,69 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black font-sans">
       {/* Main Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 sm:pt-16">
         {/* Background with subtle gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-black to-yellow-600/5" />
         
         {/* Content */}
         <div className="relative z-20 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-          {/* Yoruba Healer Logo */}
-          <div className="mb-8">
-            <div className="text-yellow-400 text-5xl md:text-6xl font-bold tracking-wider mb-4">
-              YÒRÙBÁ HEALER
+          {/* Yoruba Healer Logo with top spacing */}
+          <div className="mb-8 mt-8 sm:mt-0">
+            <div className="relative w-48 h-48 sm:w-64 sm:h-64 mx-auto mb-6">
+              <Image
+                src="/yhimg.png"
+                alt="Yoruba Healer"
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
             <div className="w-32 h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 mx-auto rounded-full" />
           </div>
 
           {/* Description */}
-          <div className="mb-12">
-            <p className="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-3xl mx-auto">
-              Experience the transformative power of spiritual healing through ancient Yoruba traditions. 
-              Our music and merchandise carry the essence of ancestral wisdom and contemporary artistry.
+          <div className="mb-12 text-left">
+            <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-6">
+              <span className="text-yellow-400 font-semibold">Yorùbá Healer by Moelogo</span>
+            </p>
+            
+            <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-6">
+              Yorùbá Healer is more than music - it's a spirit.
+            </p>
+            
+            <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-6">
+              It's a reminder that our culture, our roots, our prayers, and our rhythm all carry healing. Through story, sound and soul, I'm honouring where I come from and speaking life into where we're going.
+            </p>
+
+            <div className="space-y-4 mb-6">
+              <p className="text-lg md:text-xl text-yellow-400 font-semibold">
+                Yorùbá Healer brand celebrates:
+              </p>
+              <ul className="text-lg md:text-xl text-gray-300 leading-relaxed space-y-2 ml-6">
+                <li>• Yoruba legacy & spirituality</li>
+                <li>• The journey of African excellence</li>
+                <li>• Faith, resilience & destiny</li>
+                <li>• Healing through sound, culture & truth</li>
+                <li>• Music with purpose, depth and ancestral pride</li>
+              </ul>
+            </div>
+
+            <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-6">
+              Yorùbá Healer is for the ones who carry their identity with love...
+              for the ones still discovering who they are...
+              and for everyone who believes music can uplift, cleanse and reveal.
+            </p>
+
+            <p className="text-lg md:text-xl text-yellow-400 font-semibold leading-relaxed">
+              We're creating a movement - emotional, cultural, spiritual.
+              Let's walk this journey together.
             </p>
           </div>
 
           {/* Newsletter Signup Section */}
           <div className="bg-black/50 rounded-2xl p-8 border border-yellow-500/30 backdrop-blur-sm max-w-2xl mx-auto">
             <h2 className="text-3xl font-bold text-white mb-2">
-              Stay Connected
+              Join Mail Lists
             </h2>
             <p className="text-gray-300 mb-6">
               Sign up to receive newsletters about Yoruba Healer Albums And Pre-order Yoruba Healer Merch.
@@ -232,7 +270,7 @@ export default function Home() {
                 {/* Location */}
                 <div>
                   <label htmlFor="location" className="block text-sm font-medium text-gray-300 mb-2 text-left">
-                    Location
+                    City
                   </label>
                   <input
                     type="text"
@@ -241,9 +279,114 @@ export default function Home() {
                     value={formData.location}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 bg-black border border-yellow-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
-                    placeholder="Your city/country"
+                    placeholder="Your city"
                   />
                 </div>
+              </div>
+
+              {/* Country Selection */}
+              <div>
+                <label htmlFor="country" className="block text-sm font-medium text-gray-300 mb-2 text-left">
+                  Country *
+                </label>
+                <select
+                  id="country"
+                  name="country"
+                  required
+                  value={formData.country}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 bg-black border border-yellow-500/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
+                >
+                  <option value="">Select your country</option>
+                  <option value="AF">Afghanistan</option>
+                  <option value="AL">Albania</option>
+                  <option value="DZ">Algeria</option>
+                  <option value="AR">Argentina</option>
+                  <option value="AU">Australia</option>
+                  <option value="AT">Austria</option>
+                  <option value="BS">Bahamas</option>
+                  <option value="BH">Bahrain</option>
+                  <option value="BD">Bangladesh</option>
+                  <option value="BB">Barbados</option>
+                  <option value="BE">Belgium</option>
+                  <option value="BR">Brazil</option>
+                  <option value="CA">Canada</option>
+                  <option value="CL">Chile</option>
+                  <option value="CN">China</option>
+                  <option value="CO">Colombia</option>
+                  <option value="CD">Congo, Democratic Republic</option>
+                  <option value="CG">Congo, Republic</option>
+                  <option value="CR">Costa Rica</option>
+                  <option value="HR">Croatia</option>
+                  <option value="CU">Cuba</option>
+                  <option value="DK">Denmark</option>
+                  <option value="EG">Egypt</option>
+                  <option value="FI">Finland</option>
+                  <option value="FR">France</option>
+                  <option value="DE">Germany</option>
+                  <option value="GH">Ghana</option>
+                  <option value="GR">Greece</option>
+                  <option value="HT">Haiti</option>
+                  <option value="IN">India</option>
+                  <option value="ID">Indonesia</option>
+                  <option value="IR">Iran</option>
+                  <option value="IQ">Iraq</option>
+                  <option value="IE">Ireland</option>
+                  <option value="IL">Israel</option>
+                  <option value="IT">Italy</option>
+                  <option value="JM">Jamaica</option>
+                  <option value="JP">Japan</option>
+                  <option value="JO">Jordan</option>
+                  <option value="KE">Kenya</option>
+                  <option value="KW">Kuwait</option>
+                  <option value="LB">Lebanon</option>
+                  <option value="LR">Liberia</option>
+                  <option value="LY">Libya</option>
+                  <option value="MY">Malaysia</option>
+                  <option value="MX">Mexico</option>
+                  <option value="MA">Morocco</option>
+                  <option value="NL">Netherlands</option>
+                  <option value="NZ">New Zealand</option>
+                  <option value="NG">Nigeria</option>
+                  <option value="NO">Norway</option>
+                  <option value="OM">Oman</option>
+                  <option value="PK">Pakistan</option>
+                  <option value="PA">Panama</option>
+                  <option value="PY">Paraguay</option>
+                  <option value="PE">Peru</option>
+                  <option value="PH">Philippines</option>
+                  <option value="PL">Poland</option>
+                  <option value="PT">Portugal</option>
+                  <option value="QA">Qatar</option>
+                  <option value="RO">Romania</option>
+                  <option value="RU">Russia</option>
+                  <option value="SA">Saudi Arabia</option>
+                  <option value="SN">Senegal</option>
+                  <option value="RS">Serbia</option>
+                  <option value="SG">Singapore</option>
+                  <option value="SO">Somalia</option>
+                  <option value="ZA">South Africa</option>
+                  <option value="KR">South Korea</option>
+                  <option value="ES">Spain</option>
+                  <option value="LK">Sri Lanka</option>
+                  <option value="SE">Sweden</option>
+                  <option value="CH">Switzerland</option>
+                  <option value="TW">Taiwan</option>
+                  <option value="TZ">Tanzania</option>
+                  <option value="TH">Thailand</option>
+                  <option value="TR">Turkey</option>
+                  <option value="UG">Uganda</option>
+                  <option value="UA">Ukraine</option>
+                  <option value="AE">United Arab Emirates</option>
+                  <option value="GB">United Kingdom</option>
+                  <option value="US">United States</option>
+                  <option value="UY">Uruguay</option>
+                  <option value="VE">Venezuela</option>
+                  <option value="VN">Vietnam</option>
+                  <option value="YE">Yemen</option>
+                  <option value="ZM">Zambia</option>
+                  <option value="ZW">Zimbabwe</option>
+                </select>
               </div>
 
               {/* Submit Button */}
@@ -265,7 +408,7 @@ export default function Home() {
   );
 }
 
-// Merch Section Component (moved from original page.tsx)
+// Merch Section Component
 function MerchSection() {
   const { addToCart } = useCart();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -279,7 +422,7 @@ function MerchSection() {
       name: "Signature Hoodie",
       price: "£80.00",
       image: "/merch/hoodie.png",
-      description: "Premium black hoodie with gold YH embroidery",
+      description: "Premium black hoodie with gold Yoruba Healer embroidery",
       status: "Pre-order",
       fullDescription: "Crafted from premium heavyweight cotton, this black hoodie features intricate gold embroidery of the Yoruba Healer logo. Perfect for everyday comfort with a touch of spiritual elegance.",
       sizes: ["S", "M", "L", "XL", "XXL"],
@@ -429,8 +572,13 @@ function MerchSection() {
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <div className="text-yellow-400 text-4xl font-bold tracking-wider mb-4">
-              YÒRÙBÁ HEALER
+            <div className="relative w-32 h-32 mx-auto mb-6">
+              <Image
+                src="/yhimg.png"
+                alt="Yoruba Healer"
+                fill
+                className="object-contain"
+              />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
               Sacred Merchandise Collection
@@ -596,10 +744,13 @@ function MerchSection() {
       </section>
 
       {/* Upcoming Song Section */}
-     
+      {/* <UpcomingSong /> */}
     </div>
   );
 }
+
+// Add the missing imports at the top
+
 
 // Add the missing imports at the top
 

@@ -600,13 +600,12 @@
 // }
 
 
-
-
 'use client';
 
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "../context/CartContext";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -621,7 +620,7 @@ export default function Navbar() {
   
   const cartItemsCount = getTotalItems();
   const totalAmount = cartItems.reduce((total, item) => {
-    const price = parseFloat(item.price.replace('$', ''));
+    const price = parseFloat(item.price.replace('£', ''));
     return total + (price * item.quantity);
   }, 0);
 
@@ -667,11 +666,17 @@ export default function Navbar() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-yellow-500/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo on the left - YH */}
+            {/* Logo on the left - Yoruba Healer Logo */}
             <div className="flex-shrink-0">
               <Link href="/" className="flex items-center" onClick={closeMobileMenu}>
-                <div className="text-yellow-400 text-2xl font-bold tracking-wider">
-                  YH
+                <div className="relative w-10 h-10 sm:w-12 sm:h-12">
+                  <Image
+                    src="/yhimg.png"
+                    alt="Yoruba Healer"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
                 </div>
               </Link>
             </div>
@@ -963,7 +968,7 @@ export default function Navbar() {
                   <div className="flex justify-between items-center text-white">
                     <span className="text-lg font-semibold">Total:</span>
                     <span className="text-2xl font-bold text-yellow-400">
-                      ${totalAmount.toFixed(2)}
+                      £{totalAmount.toFixed(2)}
                     </span>
                   </div>
 
@@ -999,7 +1004,6 @@ export default function Navbar() {
     </>
   );
 }
-
 
 
 
