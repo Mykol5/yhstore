@@ -513,26 +513,38 @@ function MerchSection() {
                 className="bg-black/50 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-yellow-500/20 backdrop-blur-sm hover:border-yellow-500/40 transition-all duration-300 group cursor-pointer"
                 onClick={() => openProductModal(product)}
               >
-                {/* Product Image */}
-                <div className="relative h-32 sm:h-36 md:h-48 bg-gradient-to-br from-yellow-500/10 to-yellow-600/20 rounded-lg sm:rounded-xl mb-3 sm:mb-4 flex items-center justify-center border border-yellow-500/10 group-hover:border-yellow-500/30 transition-colors">
-                  <div className="text-center text-yellow-400/60">
-                    <svg className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mx-auto mb-1 sm:mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                    </svg>
-                    <p className="text-xs sm:text-sm">Sacred Item</p>
-                  </div>
-                  
-                  {/* Status Badge */}
-                  <div className={`absolute top-2 right-2 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-xs font-medium ${
-                    product.status === 'Exclusive' 
-                      ? 'bg-yellow-500 text-black' 
-                      : product.status === 'Limited'
-                      ? 'bg-red-500 text-white'
-                      : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                  }`}>
-                    {product.status}
-                  </div>
-                </div>
+ {/* // In the Products Grid section, update the Product Image section: */}
+
+<div className="relative h-32 sm:h-36 md:h-48 bg-gradient-to-br from-yellow-500/10 to-yellow-600/20 rounded-lg sm:rounded-xl mb-3 sm:mb-4 flex items-center justify-center border border-yellow-500/10 group-hover:border-yellow-500/30 transition-colors">
+  {product.image ? (
+    <div className="relative w-full h-full">
+      <Image
+        src={product.image}
+        alt={product.name}
+        fill
+        className="object-contain p-2"
+      />
+    </div>
+  ) : (
+    <div className="text-center text-yellow-400/60">
+      <svg className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mx-auto mb-1 sm:mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+      </svg>
+      <p className="text-xs sm:text-sm">Sacred Item</p>
+    </div>
+  )}
+  
+  {/* Status Badge remains the same */}
+  <div className={`absolute top-2 right-2 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-xs font-medium ${
+    product.status === 'Exclusive' 
+      ? 'bg-yellow-500 text-black' 
+      : product.status === 'Limited'
+      ? 'bg-red-500 text-white'
+      : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+  }`}>
+    {product.status}
+  </div>
+</div>
 
                 {/* Product Info */}
                 <div className="text-center">
@@ -544,119 +556,131 @@ function MerchSection() {
             ))}
           </div>
 
-          {/* Product Modal */}
-          {selectedProduct && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-              <div className="bg-black border border-yellow-500/30 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                <div className="p-6">
-                  {/* Header */}
-                  <div className="flex justify-between items-start mb-6">
-                    <h3 className="text-2xl font-bold text-white">{selectedProduct.name}</h3>
-                    <button 
-                      onClick={closeProductModal}
-                      className="text-gray-400 hover:text-yellow-400 transition-colors"
+{/* Product Modal */}
+{selectedProduct && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div className="bg-black border border-yellow-500/30 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="p-6">
+        {/* Header */}
+        <div className="flex justify-between items-start mb-6">
+          <h3 className="text-2xl font-bold text-white">{selectedProduct.name}</h3>
+          <button 
+            onClick={closeProductModal}
+            className="text-gray-400 hover:text-yellow-400 transition-colors"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Product Image - UPDATED: Use actual product image */}
+          <div className="bg-gradient-to-br from-yellow-500/10 to-yellow-600/20 rounded-xl h-64 flex items-center justify-center border border-yellow-500/20">
+            {selectedProduct.image ? (
+              <div className="relative w-full h-full">
+                <Image
+                  src={selectedProduct.image}
+                  alt={selectedProduct.name}
+                  fill
+                  className="object-contain p-4"
+                  priority
+                />
+              </div>
+            ) : (
+              <div className="text-center text-yellow-400/60">
+                <svg className="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                </svg>
+                <p className="text-sm">Sacred Item</p>
+              </div>
+            )}
+          </div>
+
+          {/* Product Details */}
+          <div className="space-y-4">
+            <div>
+              <h4 className="text-yellow-400 text-xl font-bold mb-2">{selectedProduct.price}</h4>
+              <p className="text-gray-300 text-sm">{selectedProduct.fullDescription}</p>
+            </div>
+
+            {/* Size Selection */}
+            {selectedProduct.sizes && selectedProduct.sizes.length > 0 && (
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Size</label>
+                <div className="flex flex-wrap gap-2">
+                  {selectedProduct.sizes.map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                        selectedSize === size
+                          ? 'bg-yellow-500 text-black'
+                          : 'bg-black border border-yellow-500/30 text-gray-300 hover:border-yellow-500/50'
+                      }`}
                     >
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
-                      </svg>
+                      {size}
                     </button>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Product Image */}
-                    <div className="bg-gradient-to-br from-yellow-500/10 to-yellow-600/20 rounded-xl h-64 flex items-center justify-center border border-yellow-500/20">
-                      <div className="text-center text-yellow-400/60">
-                        <svg className="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                        </svg>
-                        <p className="text-sm">Sacred Item</p>
-                      </div>
-                    </div>
-
-                    {/* Product Details */}
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="text-yellow-400 text-xl font-bold mb-2">{selectedProduct.price}</h4>
-                        <p className="text-gray-300 text-sm">{selectedProduct.fullDescription}</p>
-                      </div>
-
-                      {/* Size Selection */}
-                      {selectedProduct.sizes && selectedProduct.sizes.length > 0 && (
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Size</label>
-                          <div className="flex flex-wrap gap-2">
-                            {selectedProduct.sizes.map((size) => (
-                              <button
-                                key={size}
-                                onClick={() => setSelectedSize(size)}
-                                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                                  selectedSize === size
-                                    ? 'bg-yellow-500 text-black'
-                                    : 'bg-black border border-yellow-500/30 text-gray-300 hover:border-yellow-500/50'
-                                }`}
-                              >
-                                {size}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Color Selection */}
-                      {selectedProduct.colors && selectedProduct.colors.length > 0 && (
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Color</label>
-                          <div className="flex flex-wrap gap-2">
-                            {selectedProduct.colors.map((color) => (
-                              <button
-                                key={color}
-                                onClick={() => setSelectedColor(color)}
-                                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                                  selectedColor === color
-                                    ? 'bg-yellow-500 text-black'
-                                    : 'bg-black border border-yellow-500/30 text-gray-300 hover:border-yellow-500/50'
-                                }`}
-                              >
-                                {color}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Quantity Selector */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-2">Quantity</label>
-                        <div className="flex items-center space-x-3">
-                          <button
-                            onClick={decrementQuantity}
-                            className="w-10 h-10 rounded-lg border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10 transition-colors"
-                          >
-                            -
-                          </button>
-                          <span className="text-white font-medium w-8 text-center">{quantity}</span>
-                          <button
-                            onClick={incrementQuantity}
-                            className="w-10 h-10 rounded-lg border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10 transition-colors"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Add to Cart Button */}
-                      <button
-                        onClick={handleAddToCart}
-                        className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-black py-3 rounded-lg font-semibold transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                      >
-                        Add to Cart - {selectedProduct.price}
-                      </button>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
+            )}
+
+            {/* Color Selection */}
+            {selectedProduct.colors && selectedProduct.colors.length > 0 && (
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Color</label>
+                <div className="flex flex-wrap gap-2">
+                  {selectedProduct.colors.map((color) => (
+                    <button
+                      key={color}
+                      onClick={() => setSelectedColor(color)}
+                      className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                        selectedColor === color
+                          ? 'bg-yellow-500 text-black'
+                          : 'bg-black border border-yellow-500/30 text-gray-300 hover:border-yellow-500/50'
+                      }`}
+                    >
+                      {color}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Quantity Selector */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Quantity</label>
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={decrementQuantity}
+                  className="w-10 h-10 rounded-lg border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10 transition-colors"
+                >
+                  -
+                </button>
+                <span className="text-white font-medium w-8 text-center">{quantity}</span>
+                <button
+                  onClick={incrementQuantity}
+                  className="w-10 h-10 rounded-lg border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10 transition-colors"
+                >
+                  +
+                </button>
+              </div>
             </div>
-          )}
+
+            {/* Add to Cart Button */}
+            <button
+              onClick={handleAddToCart}
+              className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-black py-3 rounded-lg font-semibold transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
+            >
+              Add to Cart - {selectedProduct.price}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
         </div>
       </section>
     </div>
