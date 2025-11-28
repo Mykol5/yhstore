@@ -153,7 +153,7 @@ export default function Navbar() {
                 )}
               </button>
 
-              <Link
+              {/* <Link
                 href="/login"
                 className="text-gray-300 hover:text-yellow-400 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
               >
@@ -164,7 +164,7 @@ export default function Navbar() {
                 className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black px-6 py-2 rounded-full text-sm font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105"
               >
                 Sign Up
-              </Link>
+              </Link> */}
             </div>
 
             {/* Mobile menu button - Show on tablet and mobile (lg:hidden) */}
@@ -265,7 +265,7 @@ export default function Navbar() {
             </Link>
             
             {/* Auth buttons in mobile dropdown */}
-            <div className="space-y-2 px-3 py-3 border-b border-yellow-500/10">
+            {/* <div className="space-y-2 px-3 py-3 border-b border-yellow-500/10">
               <Link
                 href="/login"
                 className="w-full text-gray-300 hover:text-yellow-400 block px-3 py-2 rounded-md text-base font-medium text-center transition-colors duration-200"
@@ -280,7 +280,7 @@ export default function Navbar() {
               >
                 Sign Up
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </nav>
