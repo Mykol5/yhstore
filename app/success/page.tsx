@@ -50,31 +50,35 @@
 //   );
 // }
 
-
 'use client';
 
-export const dynamic = 'force-dynamic';
-
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { useCart } from '../context/CartContext';
 import Link from 'next/link';
 import Image from 'next/image';
 
 export default function SuccessPage() {
-  const searchParams = useSearchParams();
-  const sessionId = searchParams.get('session_id');
   const { clearCart } = useCart();
   const [hasClearedCart, setHasClearedCart] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Only clear cart once when the component mounts and we have a session ID
+    // Get session_id from URL using URLSearchParams
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const sessionIdFromUrl = urlParams.get('session_id');
+      setSessionId(sessionIdFromUrl);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Only clear cart once when we have a session ID
     if (sessionId && !hasClearedCart) {
       console.log('✅ Order completed, clearing cart...');
       clearCart();
-      setHasClearedCart(true); // Mark that we've cleared the cart
+      setHasClearedCart(true);
     }
-  }, [sessionId, clearCart, hasClearedCart]); // Add all dependencies
+  }, [sessionId, clearCart, hasClearedCart]);
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
@@ -133,7 +137,7 @@ export default function SuccessPage() {
           </Link>
           
           <Link 
-            href="/merch"
+            href="/"
             className="block w-full border-2 border-yellow-500 text-yellow-400 py-3 rounded-lg font-semibold hover:bg-yellow-500/10 transition-all duration-300"
           >
             Browse More Merch
