@@ -338,7 +338,7 @@ function MerchSection() {
       id: 1,
       name: "Signature Hoodie",
       price: "£80.00",
-      image: "/merch/hoodie.png",
+      image: "/hoodie.jpg",
       description: "Premium black hoodie with gold Yoruba Healer embroidery",
       status: "Pre-order",
       fullDescription: "Crafted from premium heavyweight cotton, this black hoodie features intricate gold embroidery of the Yoruba Healer logo. Perfect for everyday comfort with a touch of spiritual elegance.",
@@ -349,7 +349,7 @@ function MerchSection() {
       id: 2,
       name: "Limited Tee",
       price: "£80.00",
-      image: "/merch/tee.png",
+      image: "/hoodie.jpg",
       description: "Classic cotton tee with exclusive artwork",
       status: "Pre-order",
       fullDescription: "100% premium cotton tee featuring exclusive Yoruba Healer artwork on the front. Soft, breathable, and perfect for showing your spiritual connection.",
@@ -360,7 +360,7 @@ function MerchSection() {
       id: 3,
       name: "Collector's Cap",
       price: "£80.00",
-      image: "/merch/cap.png",
+      image: "/hoodie.jpg",
       description: "Structured cap with metallic logo",
       status: "Pre-order",
       fullDescription: "Structured six-panel cap with a curved visor and metallic Yoruba Healer logo patch. Adjustable strap for perfect fit.",
@@ -371,79 +371,79 @@ function MerchSection() {
       id: 4,
       name: "Vinyl Package",
       price: "£80.00",
-      image: "/merch/vinyl.png",
+      image: "/hoodie.jpg",
       description: "Limited edition vinyl + digital download",
       status: "Pre-order",
       fullDescription: "Limited edition 180g vinyl featuring exclusive Yoruba Healer artwork. Includes digital download code and spiritual guidance booklet.",
       sizes: ["12-inch"],
       colors: ["Clear", "Black", "Gold Swirl"]
     },
+    // {
+    //   id: 5,
+    //   name: "Healing Bundle",
+    //   price: "£80.00",
+    //   image: "hoodie.jpg",
+    //   description: "Complete merch collection + spiritual access",
+    //   status: "Exclusive",
+    //   fullDescription: "The ultimate spiritual bundle including hoodie, tee, cap, and vinyl. Plus access to exclusive healing content and early releases.",
+    //   sizes: ["Bundle"],
+    //   colors: ["Complete Set"]
+    // },
+    // {
+    //   id: 6,
+    //   name: "Spiritual Beanie",
+    //   price: "£80.00",
+    //   image: "/merch/beanie.png",
+    //   description: "Acrylic blend beanie with woven logo",
+    //   status: "New",
+    //   fullDescription: "Warm and comfortable acrylic blend beanie with woven Yoruba Healer logo. One size fits all for spiritual comfort.",
+    //   sizes: ["One Size"],
+    //   colors: ["Black", "Charcoal", "Navy"]
+    // },
     {
       id: 5,
-      name: "Healing Bundle",
-      price: "£80.00",
-      image: "/merch/bundle.png",
-      description: "Complete merch collection + spiritual access",
-      status: "Exclusive",
-      fullDescription: "The ultimate spiritual bundle including hoodie, tee, cap, and vinyl. Plus access to exclusive healing content and early releases.",
-      sizes: ["Bundle"],
-      colors: ["Complete Set"]
-    },
-    {
-      id: 6,
-      name: "Spiritual Beanie",
-      price: "£80.00",
-      image: "/merch/beanie.png",
-      description: "Acrylic blend beanie with woven logo",
-      status: "New",
-      fullDescription: "Warm and comfortable acrylic blend beanie with woven Yoruba Healer logo. One size fits all for spiritual comfort.",
-      sizes: ["One Size"],
-      colors: ["Black", "Charcoal", "Navy"]
-    },
-    {
-      id: 7,
       name: "Ancestral Jacket",
       price: "£80.00",
-      image: "/merch/jacket.png",
+      image: "/hoodie.jpg",
       description: "Premium track jacket with detailed embroidery",
       status: "Limited",
       fullDescription: "Lightweight track jacket with detailed ancestral embroidery on chest and sleeves. Perfect for spiritual layering and protection.",
       sizes: ["S", "M", "L", "XL"],
       colors: ["Black", "Navy", "Burgundy"]
     },
-    {
-      id: 8,
-      name: "Sacred Sticker Pack",
-      price: "£80.00",
-      image: "/merch/stickers.png",
-      description: "Set of 5 premium vinyl stickers",
-      status: "In Stock",
-      fullDescription: "Set of 5 high-quality vinyl stickers featuring Yoruba Healer sacred symbols and artwork. Weather-resistant and perfect for spiritual tools.",
-      sizes: ["Pack of 5"],
-      colors: ["Mixed Colors"]
-    },
-    {
-      id: 9,
-      name: "Ritual Tote",
-      price: "£80.00",
-      image: "/merch/tote.png",
-      description: "Eco-friendly canvas tote bag",
-      status: "Eco",
-      fullDescription: "Durable canvas tote bag made from eco-friendly materials with sacred Yoruba Healer print. Perfect for carrying spiritual items.",
-      sizes: ["One Size"],
-      colors: ["Natural", "Black", "Olive"]
-    },
-    {
-      id: 10,
-      name: "Protection Phone Case",
-      price: "£80.00",
-      image: "/merch/case.png",
-      description: "Protective case with sacred artwork",
-      status: "New",
-      fullDescription: "Durable protective phone case featuring exclusive Yoruba Healer sacred artwork. Carries spiritual protection with you.",
-      sizes: ["Universal"],
-      colors: ["Clear", "Black", "Smoke"]
-    }
+    // {
+    //   id: 8,
+    //   name: "Sacred Sticker Pack",
+    //   price: "£80.00",
+    //   image: "/merch/stickers.png",
+    //   description: "Set of 5 premium vinyl stickers",
+    //   status: "In Stock",
+    //   fullDescription: "Set of 5 high-quality vinyl stickers featuring Yoruba Healer sacred symbols and artwork. Weather-resistant and perfect for spiritual tools.",
+    //   sizes: ["Pack of 5"],
+    //   colors: ["Mixed Colors"]
+    // }
+    // {
+    //   id: 9,
+    //   name: "Ritual Tote",
+    //   price: "£80.00",
+    //   image: "/merch/tote.png",
+    //   description: "Eco-friendly canvas tote bag",
+    //   status: "Eco",
+    //   fullDescription: "Durable canvas tote bag made from eco-friendly materials with sacred Yoruba Healer print. Perfect for carrying spiritual items.",
+    //   sizes: ["One Size"],
+    //   colors: ["Natural", "Black", "Olive"]
+    // },
+    // {
+    //   id: 10,
+    //   name: "Protection Phone Case",
+    //   price: "£80.00",
+    //   image: "/merch/case.png",
+    //   description: "Protective case with sacred artwork",
+    //   status: "New",
+    //   fullDescription: "Durable protective phone case featuring exclusive Yoruba Healer sacred artwork. Carries spiritual protection with you.",
+    //   sizes: ["Universal"],
+    //   colors: ["Clear", "Black", "Smoke"]
+    // }
   ];
 
   const openProductModal = (product: Product) => {
