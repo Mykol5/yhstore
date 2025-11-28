@@ -371,7 +371,7 @@ function MerchSection() {
       id: 4,
       name: "Vinyl Package",
       price: "£80.00",
-      image: "/shorty.jpg",
+      image: "/shortie.jpg",
       description: "Limited edition vinyl + digital download",
       status: "Pre-order",
       fullDescription: "Limited edition 180g vinyl featuring exclusive Yoruba Healer artwork. Includes digital download code and spiritual guidance booklet.",
