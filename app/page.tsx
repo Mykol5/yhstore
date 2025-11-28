@@ -360,7 +360,7 @@ function MerchSection() {
       id: 3,
       name: "Collector's Cap",
       price: "£80.00",
-      image: "/hoodie.jpg",
+      image: "/brondy.jpg",
       description: "Structured cap with metallic logo",
       status: "Pre-order",
       fullDescription: "Structured six-panel cap with a curved visor and metallic Yoruba Healer logo patch. Adjustable strap for perfect fit.",
@@ -371,7 +371,7 @@ function MerchSection() {
       id: 4,
       name: "Vinyl Package",
       price: "£80.00",
-      image: "/hoodie.jpg",
+      image: "/shorty.jpg",
       description: "Limited edition vinyl + digital download",
       status: "Pre-order",
       fullDescription: "Limited edition 180g vinyl featuring exclusive Yoruba Healer artwork. Includes digital download code and spiritual guidance booklet.",
@@ -465,7 +465,8 @@ function MerchSection() {
         name: selectedProduct.name,
         price: selectedProduct.price,
         size: selectedSize,
-        color: selectedColor
+        color: selectedColor,
+        image: undefined
       }, quantity);
 
       console.log('Added to cart:', {

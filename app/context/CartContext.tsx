@@ -201,6 +201,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface CartItem {
+  image: any;
   id: number;
   name: string;
   price: string;
