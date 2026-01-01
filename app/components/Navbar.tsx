@@ -489,7 +489,7 @@ export default function Navbar() {
       item.color === color
     );
     if (item) {
-      updateQuantity(itemId, item.quantity + 1, size, color);
+      updateQuantity(itemId, item.quantity + 1);
     }
   };
 
@@ -502,16 +502,16 @@ export default function Navbar() {
     );
     if (item) {
       if (item.quantity > 1) {
-        updateQuantity(itemId, item.quantity - 1, size, color);
+        updateQuantity(itemId, item.quantity - 1);
       } else {
-        removeFromCart(itemId, size, color);
+        removeFromCart(itemId);
       }
     }
   };
 
   // Fixed: Handle remove with size/color variations
   const handleRemove = (itemId: number, size?: string, color?: string) => {
-    removeFromCart(itemId, size, color);
+    removeFromCart(itemId);
   };
 
   const handleCheckout = () => {
