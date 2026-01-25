@@ -1,12 +1,1188 @@
+// 'use client';
+
+// import { useState, useEffect, useRef } from 'react';
+// import Image from 'next/image';
+// import { useCart } from './context/CartContext';
+// import { useUser } from './context/UserContext';
+// import { motion, AnimatePresence } from 'framer-motion';
+// import { Play, Heart, Sparkles, Globe, Truck, Shield, Zap, Music2, Star, ArrowRight } from 'lucide-react';
+
+
+// interface Product {
+//   id: number;
+//   name: string;
+//   price: string;
+//   image: string;
+//   description: string;
+//   status: string;
+//   fullDescription: string;
+//   sizes?: string[];
+//   colors?: string[];
+//   category: string;
+//   rating: number;
+//   reviewCount: number;
+// }
+
+// // Enhanced shipping rates with more countries
+// const SHIPPING_RATES: Record<string, number> = {
+//   'GB': 9.99, 'US': 14.99, 'CA': 17.99, 'FR': 11.99, 'DE': 11.99,
+//   'ES': 11.99, 'IT': 11.99, 'NL': 11.99, 'BE': 11.99, 'PT': 11.99,
+//   'IE': 11.99, 'AU': 19.99, 'NZ': 21.99, 'JP': 17.99, 'CN': 15.99,
+//   'IN': 19.99, 'NG': 24.99, 'GH': 24.99, 'KE': 24.99, 'ZA': 21.99,
+//   'BR': 21.99, 'MX': 17.99, 'AR': 19.99, 'CL': 19.99, 'AE': 17.99,
+//   'SA': 17.99, 'QA': 17.99, 'SG': 14.99, 'MY': 15.99, 'ID': 17.99,
+//   'KR': 14.99, 'RU': 19.99, 'TR': 14.99,
+// };
+
+// export default function Home() {
+//   const { hasSignedUp, setHasSignedUp, setUserData, hasPurchased, setHasPurchased, selectedCountry, setSelectedCountry } = useUser();
+//   const { cart } = useCart();
+//   const [showPromoModal, setShowPromoModal] = useState(false);
+//   const [showSignupSection, setShowSignupSection] = useState(false);
+//   const [showFloatingSignup, setShowFloatingSignup] = useState(false);
+//   const [scrollProgress, setScrollProgress] = useState(0);
+//   const [isScrolled, setIsScrolled] = useState(false);
+  
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+//       const progress = (window.scrollY / totalScroll) * 100;
+//       setScrollProgress(progress);
+//       setIsScrolled(window.scrollY > 50);
+//     };
+
+//     window.addEventListener('scroll', handleScroll);
+//     return () => window.removeEventListener('scroll', handleScroll);
+//   }, []);
+
+//   useEffect(() => {
+//     if (cart.length > 0 && !hasSignedUp) {
+//       setShowSignupSection(true);
+//       if (!hasPurchased) {
+//         setHasPurchased(true);
+//       }
+//     } else {
+//       setShowSignupSection(false);
+//     }
+//   }, [cart, hasSignedUp, hasPurchased, setHasPurchased]);
+
+//   useEffect(() => {
+//     if (!hasSignedUp && !showSignupSection) {
+//       const timer = setTimeout(() => {
+//         setShowFloatingSignup(true);
+//       }, 10000);
+
+//       return () => clearTimeout(timer);
+//     }
+//   }, [hasSignedUp, showSignupSection]);
+
+//   return (
+//     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black font-sans">
+//       {/* Animated Background Elements */}
+//       <div className="fixed inset-0 overflow-hidden pointer-events-none">
+//         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl animate-pulse"></div>
+//         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+//       </div>
+
+//       {/* Progress Bar */}
+//       <div className="fixed top-0 left-0 w-full h-1 bg-gray-800 z-50">
+//         <motion.div 
+//           className="h-full bg-gradient-to-r from-yellow-500 to-orange-500"
+//           style={{ width: `${scrollProgress}%` }}
+//         />
+//       </div>
+
+//       {/* Enhanced Promotional Banner */}
+//       <motion.div 
+//         initial={{ y: -50 }}
+//         animate={{ y: 0 }}
+//         className="bg-gradient-to-r from-yellow-500 via-orange-500 to-yellow-500 text-black py-3 px-4 sticky top-0 z-40 border-b border-yellow-600/50"
+//       >
+//         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+//           <div className="flex items-center gap-3">
+//             <div className="relative">
+//               <Sparkles className="w-5 h-5 animate-spin-slow" />
+//               <div className="absolute -inset-1 bg-yellow-400/30 rounded-full blur-sm"></div>
+//             </div>
+//             <span className="font-bold text-sm sm:text-base tracking-wide uppercase flex items-center gap-2">
+//               <Music2 className="w-4 h-4 animate-pulse" />
+//               PREMIERE: YORUBA HEALER VOL. 2 - GLOBAL TOUR ANNOUNCEMENT
+//             </span>
+//           </div>
+//           <motion.button 
+//             whileHover={{ scale: 1.05 }}
+//             whileTap={{ scale: 0.95 }}
+//             onClick={() => setShowPromoModal(true)}
+//             className="relative overflow-hidden group bg-black text-yellow-400 px-6 py-2 rounded-full text-sm font-semibold hover:bg-gray-900 transition-all duration-300"
+//           >
+//             <span className="relative z-10 flex items-center gap-2">
+//               <Zap className="w-4 h-4 group-hover:animate-bounce" />
+//               GET VIP ACCESS
+//             </span>
+//             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+//           </motion.button>
+//         </div>
+//       </motion.div>
+
+//       {/* Hero Section */}
+//       {/* <header className="relative py-16 px-4 overflow-hidden">
+//         <div className="max-w-7xl mx-auto">
+//           <div className="relative z-10 text-center">
+//             <motion.div
+//               initial={{ scale: 0.9, opacity: 0 }}
+//               animate={{ scale: 1, opacity: 1 }}
+//               transition={{ duration: 0.5 }}
+//               className="relative w-48 h-48 mx-auto mb-8"
+//             >
+//               <div className="absolute inset-0 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full blur-2xl opacity-30 animate-pulse"></div>
+//               <Image
+//                 src="/yhimg.png"
+//                 alt="Yoruba Healer"
+//                 fill
+//                 className="object-contain relative z-10 drop-shadow-2xl"
+//                 priority
+//               />
+//             </motion.div>
+            
+//             <motion.h1 
+//               initial={{ y: 20, opacity: 0 }}
+//               animate={{ y: 0, opacity: 1 }}
+//               transition={{ delay: 0.2 }}
+//               className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent mb-6"
+//             >
+//               YORUBA HEALER
+//             </motion.h1>
+            
+//             <motion.p 
+//               initial={{ y: 20, opacity: 0 }}
+//               animate={{ y: 0, opacity: 1 }}
+//               transition={{ delay: 0.3 }}
+//               className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed"
+//             >
+//               Global Music. Premium Merchandise. Exclusive Experiences.
+//             </motion.p>
+
+            
+//             <motion.div 
+//               initial={{ y: 20, opacity: 0 }}
+//               animate={{ y: 0, opacity: 1 }}
+//               transition={{ delay: 0.4 }}
+//               className="flex flex-wrap items-center justify-center gap-6 mb-12"
+//             >
+//               <div className="flex items-center gap-2 text-gray-400">
+//                 <Globe className="w-5 h-5 text-yellow-500" />
+//                 <span className="text-sm">Worldwide Shipping</span>
+//               </div>
+//               <div className="flex items-center gap-2 text-gray-400">
+//                 <Shield className="w-5 h-5 text-yellow-500" />
+//                 <span className="text-sm">Authentic Products</span>
+//               </div>
+//               <div className="flex items-center gap-2 text-gray-400">
+//                 <Truck className="w-5 h-5 text-yellow-500" />
+//                 <span className="text-sm">Express Delivery</span>
+//               </div>
+//             </motion.div>
+//           </div>
+//         </div>
+//       </header> */}
+
+//       {/* Main Merch Section */}
+//       <MerchSection />
+      
+//       {/* Floating Signup Button */}
+//       <AnimatePresence>
+//         {showFloatingSignup && !hasSignedUp && !showSignupSection && (
+//           <motion.div
+//             initial={{ y: 100, opacity: 0 }}
+//             animate={{ y: 0, opacity: 1 }}
+//             exit={{ y: 100, opacity: 0 }}
+//             className="fixed bottom-6 right-6 z-40"
+//           >
+//             <motion.button
+//               whileHover={{ scale: 1.1 }}
+//               whileTap={{ scale: 0.9 }}
+//               onClick={() => setShowPromoModal(true)}
+//               className="relative group bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-8 py-4 rounded-2xl font-bold shadow-2xl hover:shadow-yellow-500/30 transition-all duration-300 flex items-center gap-3"
+//             >
+//               <div className="absolute inset-0 bg-white/20 rounded-2xl blur-md group-hover:blur-xl transition-all duration-300"></div>
+//               <span className="relative z-10 flex items-center gap-3">
+//                 <Music2 className="w-6 h-6 animate-pulse" />
+//                 <span className="text-lg">Join VIP List</span>
+//                 <Sparkles className="w-5 h-5" />
+//               </span>
+//             </motion.button>
+//           </motion.div>
+//         )}
+//       </AnimatePresence>
+
+//       {/* Newsletter Signup Section */}
+//       {showSignupSection && (
+//         <NewsletterSignupSection onSignup={() => {
+//           setShowSignupSection(false);
+//           setShowFloatingSignup(false);
+//         }} />
+//       )}
+
+//       {/* Promotional Modal */}
+//       {showPromoModal && (
+//         <PromotionalModal onClose={() => setShowPromoModal(false)} />
+//       )}
+//     </div>
+//   );
+// }
+
+// // Enhanced Merch Section Component
+// function MerchSection() {
+//   const { addToCart } = useCart();
+//   const { selectedCountry, setHasPurchased } = useUser();
+//   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+//   const [quantity, setQuantity] = useState(1);
+//   const [selectedSize, setSelectedSize] = useState('');
+//   const [selectedColor, setSelectedColor] = useState('');
+//   const [wishlist, setWishlist] = useState<number[]>([]);
+  
+//   const shippingCost = SHIPPING_RATES[selectedCountry] || 19.99;
+
+//   const merchProducts: Product[] = [
+//     {
+//       id: 1,
+//       name: "Signature Hoodie",
+//       price: "£89.99",
+//       image: "/hoodie.jpg",
+//       description: "Premium black hoodie with gold embroidery",
+//       status: "Pre-order",
+//       fullDescription: "Crafted from premium heavyweight cotton, this black hoodie features intricate gold embroidery of the Yoruba Healer logo. Perfect for everyday comfort.",
+//       sizes: ["S", "M", "L", "XL", "XXL"],
+//       colors: ["Midnight Black", "Royal Navy", "Charcoal"],
+//       category: "Apparel",
+//       rating: 4.9,
+//       reviewCount: 234
+//     },
+//     {
+//       id: 2,
+//       name: "Limited Edition T-Shirt",
+//       price: "£49.99",
+//       image: "/hoodie.jpg",
+//       description: "Classic cotton tee with exclusive artwork",
+//       status: "Pre-order",
+//       fullDescription: "100% premium cotton tee featuring exclusive Yoruba Healer artwork on the front. Soft, breathable, and perfect for daily wear.",
+//       sizes: ["S", "M", "L", "XL"],
+//       colors: ["Pure White", "Midnight Black", "Ash Gray"],
+//       category: "Apparel",
+//       rating: 4.8,
+//       reviewCount: 189
+//     },
+//     {
+//       id: 3,
+//       name: "Collector's Cap",
+//       price: "£39.99",
+//       image: "/brondy.jpg",
+//       description: "Structured cap with metallic logo",
+//       status: "Pre-order",
+//       fullDescription: "Structured six-panel cap with a curved visor and metallic Yoruba Healer logo patch. Adjustable strap for perfect fit.",
+//       sizes: ["One Size"],
+//       colors: ["Black", "Navy", "Olive"],
+//       category: "Accessories",
+//       rating: 4.7,
+//       reviewCount: 156
+//     },
+//     {
+//       id: 4,
+//       name: "Vinyl Album Package",
+//       price: "£69.99",
+//       image: "/shortie.jpg",
+//       description: "Limited edition vinyl + digital download",
+//       status: "Pre-order",
+//       fullDescription: "Limited edition 180g vinyl featuring exclusive artwork. Includes digital download code and exclusive booklet.",
+//       sizes: ["12-inch"],
+//       colors: ["Clear", "Black", "Gold Swirl"],
+//       category: "Music",
+//       rating: 5.0,
+//       reviewCount: 312
+//     },
+//     {
+//       id: 5,
+//       name: "Complete Collection Bundle",
+//       price: "£199.99",
+//       image: "/hoodie.jpg",
+//       description: "Full merch collection + digital content",
+//       status: "Exclusive",
+//       fullDescription: "The ultimate bundle including hoodie, tee, cap, and vinyl. Plus access to exclusive digital content and early releases.",
+//       sizes: ["Bundle"],
+//       colors: ["Complete Set"],
+//       category: "Bundles",
+//       rating: 4.9,
+//       reviewCount: 89
+//     },
+//     {
+//       id: 6,
+//       name: "Premium Track Jacket",
+//       price: "£104.99",
+//       image: "/hoodie.jpg",
+//       description: "Lightweight jacket with detailed embroidery",
+//       status: "Limited",
+//       fullDescription: "Lightweight track jacket with detailed embroidery on chest and sleeves. Perfect for layering and style.",
+//       sizes: ["S", "M", "L", "XL"],
+//       colors: ["Black", "Navy", "Burgundy"],
+//       category: "Apparel",
+//       rating: 4.8,
+//       reviewCount: 167
+//     },
+//   ];
+
+//   const toggleWishlist = (id: number) => {
+//     setWishlist(prev => 
+//       prev.includes(id) 
+//         ? prev.filter(item => item !== id)
+//         : [...prev, id]
+//     );
+//   };
+
+//   const openProductModal = (product: Product) => {
+//     setSelectedProduct(product);
+//     setQuantity(1);
+//     setSelectedSize(product.sizes?.[0] || '');
+//     setSelectedColor(product.colors?.[0] || '');
+//   };
+
+//   const closeProductModal = () => {
+//     setSelectedProduct(null);
+//     setQuantity(1);
+//   };
+
+//   const handleAddToCart = () => {
+//     if (selectedProduct) {
+//       const basePrice = parseFloat(selectedProduct.price.replace('£', ''));
+//       const totalPrice = (basePrice * quantity) + shippingCost;
+      
+//       addToCart({
+//         id: selectedProduct.id,
+//         name: selectedProduct.name,
+//         price: `£${totalPrice.toFixed(2)}`,
+//         basePrice: basePrice,
+//         shipping: shippingCost,
+//         size: selectedSize,
+//         color: selectedColor,
+//         image: undefined
+//       }, quantity);
+
+//       setHasPurchased(true);
+//       closeProductModal();
+//     }
+//   };
+
+//   const incrementQuantity = () => setQuantity(prev => prev + 1);
+//   const decrementQuantity = () => setQuantity(prev => Math.max(1, prev - 1));
+
+//   return (
+//     <section className="py-20 px-4 relative">
+//       <div className="max-w-7xl mx-auto">
+// {/* Enhanced Section Header - Refined */}
+// <motion.div 
+//   initial={{ y: 30, opacity: 0 }}
+//   whileInView={{ y: 0, opacity: 1 }}
+//   viewport={{ once: true }}
+//   className="text-center mb-12"
+// >
+//   <div className="inline-flex items-center gap-2 mb-3 px-3 py-1.5 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-full border border-yellow-500/20">
+//     <Sparkles className="w-3 h-3 text-yellow-500" />
+//     <span className="text-yellow-500 text-xs font-medium uppercase tracking-wider">Premium Collection</span>
+//   </div>
+  
+//   <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+//     Global Merchandise
+//     <span className="block text-lg md:text-xl text-gray-400 font-normal mt-1">Curated for Worldwide Fans</span>
+//   </h2>
+  
+//   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl mx-auto mt-8">
+//     <div className="text-center p-3 bg-gray-900/30 rounded-lg border border-gray-800 hover:border-yellow-500/30 transition-colors">
+//       <div className="text-xl font-bold text-yellow-500">100%</div>
+//       <div className="text-gray-400 text-xs">Authentic</div>
+//     </div>
+//     <div className="text-center p-3 bg-gray-900/30 rounded-lg border border-gray-800 hover:border-yellow-500/30 transition-colors">
+//       <div className="text-xl font-bold text-yellow-500">48H</div>
+//       <div className="text-gray-400 text-xs">Fast Dispatch</div>
+//     </div>
+//     <div className="text-center p-3 bg-gray-900/30 rounded-lg border border-gray-800 hover:border-yellow-500/30 transition-colors">
+//       <div className="text-xl font-bold text-yellow-500">60+</div>
+//       <div className="text-gray-400 text-xs">Countries</div>
+//     </div>
+//     <div className="text-center p-3 bg-gray-900/30 rounded-lg border border-gray-800 hover:border-yellow-500/30 transition-colors">
+//       <div className="text-xl font-bold text-yellow-500">24/7</div>
+//       <div className="text-gray-400 text-xs">Support</div>
+//     </div>
+//   </div>
+// </motion.div>
+
+//         {/* Products Grid with Enhanced Cards */}
+//         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+//           {merchProducts.map((product, index) => (
+//             <motion.div
+//               key={product.id}
+//               initial={{ y: 50, opacity: 0 }}
+//               whileInView={{ y: 0, opacity: 1 }}
+//               viewport={{ once: true }}
+//               transition={{ delay: index * 0.1 }}
+//               className="group relative"
+//             >
+//               <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/0 via-yellow-500/5 to-yellow-500/0 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+              
+//               <div 
+//                 className="relative bg-gray-900/40 backdrop-blur-sm rounded-2xl p-6 border border-gray-800 group-hover:border-yellow-500/50 transition-all duration-500 hover:scale-[1.02] cursor-pointer group-hover:shadow-2xl group-hover:shadow-yellow-500/10"
+//                 onClick={() => openProductModal(product)}
+//               >
+//                 {/* Product Image */}
+//                 <div className="relative h-80 mb-6 rounded-xl overflow-hidden bg-gradient-to-br from-gray-900 to-black">
+//                   {product.image ? (
+//                     <Image
+//                       src={product.image}
+//                       alt={product.name}
+//                       fill
+//                       className="object-cover group-hover:scale-110 transition-transform duration-700"
+//                     />
+//                   ) : (
+//                     <div className="w-full h-full flex items-center justify-center">
+//                       <Music2 className="w-20 h-20 text-gray-700" />
+//                     </div>
+//                   )}
+                  
+//                   {/* Status Badge */}
+//                   <div className="absolute top-4 left-4">
+//                     <div className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
+//                       product.status === 'Exclusive' 
+//                         ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black' 
+//                         : product.status === 'Limited'
+//                         ? 'bg-gradient-to-r from-red-600 to-pink-600 text-white'
+//                         : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
+//                     } shadow-lg`}>
+//                       {product.status}
+//                     </div>
+//                   </div>
+                  
+//                   {/* Wishlist Button */}
+//                   <button 
+//                     onClick={(e) => {
+//                       e.stopPropagation();
+//                       toggleWishlist(product.id);
+//                     }}
+//                     className="absolute top-4 right-4 p-2.5 bg-black/60 backdrop-blur-sm rounded-full hover:bg-black/80 transition-colors"
+//                   >
+//                     <Heart className={`w-5 h-5 ${wishlist.includes(product.id) ? 'fill-red-500 text-red-500' : 'text-white'}`} />
+//                   </button>
+                  
+//                   {/* Quick View Overlay */}
+//                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+//                     <div className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white font-medium text-sm">
+//                       Quick View
+//                     </div>
+//                   </div>
+//                 </div>
+
+//                 {/* Product Info */}
+//                 <div>
+//                   <div className="flex items-center justify-between mb-2">
+//                     <span className="text-sm text-yellow-500 font-medium">{product.category}</span>
+//                     <div className="flex items-center gap-1">
+//                       <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+//                       <span className="text-sm text-white font-medium">{product.rating}</span>
+//                       <span className="text-xs text-gray-500">({product.reviewCount})</span>
+//                     </div>
+//                   </div>
+                  
+//                   <h3 className="text-xl font-bold text-white mb-2 group-hover:text-yellow-400 transition-colors">{product.name}</h3>
+//                   <p className="text-gray-400 text-sm mb-4 line-clamp-2">{product.description}</p>
+                  
+//                   <div className="flex items-center justify-between pt-4 border-t border-gray-800">
+//                     <div>
+//                       <div className="text-yellow-500 text-2xl font-bold">{product.price}</div>
+//                       <div className="text-gray-500 text-xs">+ shipping</div>
+//                     </div>
+                    
+//                     <motion.button 
+//                       whileHover={{ scale: 1.05 }}
+//                       whileTap={{ scale: 0.95 }}
+//                       onClick={(e) => {
+//                         e.stopPropagation();
+//                         openProductModal(product);
+//                       }}
+//                       className="px-5 py-2.5 bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 text-white rounded-lg text-sm font-medium hover:from-gray-700 hover:to-gray-800 transition-all duration-200"
+//                     >
+//                       Select Options
+//                     </motion.button>
+//                   </div>
+//                 </div>
+//               </div>
+//             </motion.div>
+//           ))}
+//         </div>
+
+//         {/* Enhanced Product Modal */}
+//         <AnimatePresence>
+//           {selectedProduct && (
+//             <motion.div
+//               initial={{ opacity: 0 }}
+//               animate={{ opacity: 1 }}
+//               exit={{ opacity: 0 }}
+//               className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md"
+//             >
+//               <motion.div
+//                 initial={{ scale: 0.9, opacity: 0, y: 20 }}
+//                 animate={{ scale: 1, opacity: 1, y: 0 }}
+//                 exit={{ scale: 0.9, opacity: 0, y: 20 }}
+//                 className="relative bg-gradient-to-br from-gray-900 to-black rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-gray-800 shadow-2xl"
+//               >
+//                 {/* Close Button */}
+//                 <button 
+//                   onClick={closeProductModal}
+//                   className="absolute top-6 right-6 z-10 p-2 bg-gray-900/80 backdrop-blur-sm rounded-full hover:bg-gray-800 transition-colors"
+//                 >
+//                   <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
+//                   </svg>
+//                 </button>
+
+//                 <div className="p-8">
+//                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+//                     {/* Product Image Gallery */}
+//                     <div className="space-y-4">
+//                       <div className="relative h-96 rounded-2xl overflow-hidden bg-gradient-to-br from-gray-900 to-black">
+//                         {selectedProduct.image && (
+//                           <Image
+//                             src={selectedProduct.image}
+//                             alt={selectedProduct.name}
+//                             fill
+//                             className="object-cover"
+//                             priority
+//                           />
+//                         )}
+//                         <div className="absolute top-4 left-4">
+//                           <div className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
+//                             selectedProduct.status === 'Exclusive' 
+//                               ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black' 
+//                               : selectedProduct.status === 'Limited'
+//                               ? 'bg-gradient-to-r from-red-600 to-pink-600 text-white'
+//                               : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
+//                           }`}>
+//                             {selectedProduct.status}
+//                           </div>
+//                         </div>
+//                       </div>
+                      
+//                       {/* Thumbnails */}
+//                       <div className="grid grid-cols-3 gap-3">
+//                         {[1, 2, 3].map((i) => (
+//                           <div key={i} className="h-24 rounded-lg bg-gray-800 border border-gray-700 hover:border-yellow-500 cursor-pointer transition-colors"></div>
+//                         ))}
+//                       </div>
+//                     </div>
+
+//                     {/* Product Details */}
+//                     <div className="space-y-6">
+//                       <div>
+//                         <h3 className="text-3xl font-bold text-white mb-2">{selectedProduct.name}</h3>
+//                         <div className="flex items-center gap-4 mb-4">
+//                           <div className="flex items-center gap-1">
+//                             {[...Array(5)].map((_, i) => (
+//                               <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+//                             ))}
+//                             <span className="text-sm text-gray-400 ml-2">({selectedProduct.reviewCount} reviews)</span>
+//                           </div>
+//                           <span className="text-sm text-green-500">In Stock</span>
+//                         </div>
+                        
+//                         <div className="text-yellow-500 text-4xl font-bold mb-6">{selectedProduct.price}</div>
+                        
+//                         <p className="text-gray-300 leading-relaxed">{selectedProduct.fullDescription}</p>
+//                       </div>
+
+//                       {/* Size Selection */}
+//                       {selectedProduct.sizes && selectedProduct.sizes.length > 0 && (
+//                         <div>
+//                           <label className="block text-sm font-medium text-gray-300 mb-3">Select Size</label>
+//                           <div className="flex flex-wrap gap-2">
+//                             {selectedProduct.sizes.map((size) => (
+//                               <motion.button
+//                                 key={size}
+//                                 whileHover={{ scale: 1.05 }}
+//                                 whileTap={{ scale: 0.95 }}
+//                                 onClick={() => setSelectedSize(size)}
+//                                 className={`px-5 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
+//                                   selectedSize === size
+//                                     ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black shadow-lg'
+//                                     : 'bg-gray-800 border border-gray-700 text-gray-300 hover:border-yellow-500 hover:text-white'
+//                                 }`}
+//                               >
+//                                 {size}
+//                               </motion.button>
+//                             ))}
+//                           </div>
+//                         </div>
+//                       )}
+
+//                       {/* Color Selection */}
+//                       {selectedProduct.colors && selectedProduct.colors.length > 0 && (
+//                         <div>
+//                           <label className="block text-sm font-medium text-gray-300 mb-3">Select Color</label>
+//                           <div className="flex flex-wrap gap-2">
+//                             {selectedProduct.colors.map((color) => (
+//                               <motion.button
+//                                 key={color}
+//                                 whileHover={{ scale: 1.05 }}
+//                                 whileTap={{ scale: 0.95 }}
+//                                 onClick={() => setSelectedColor(color)}
+//                                 className={`px-5 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
+//                                   selectedColor === color
+//                                     ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black shadow-lg'
+//                                     : 'bg-gray-800 border border-gray-700 text-gray-300 hover:border-yellow-500 hover:text-white'
+//                                 }`}
+//                               >
+//                                 {color}
+//                               </motion.button>
+//                             ))}
+//                           </div>
+//                         </div>
+//                       )}
+
+//                       {/* Quantity Selector */}
+//                       <div>
+//                         <label className="block text-sm font-medium text-gray-300 mb-3">Quantity</label>
+//                         <div className="flex items-center space-x-4">
+//                           <motion.button
+//                             whileTap={{ scale: 0.9 }}
+//                             onClick={decrementQuantity}
+//                             className="w-12 h-12 rounded-xl border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors flex items-center justify-center"
+//                           >
+//                             -
+//                           </motion.button>
+//                           <span className="text-2xl font-bold text-white w-12 text-center">{quantity}</span>
+//                           <motion.button
+//                             whileTap={{ scale: 0.9 }}
+//                             onClick={incrementQuantity}
+//                             className="w-12 h-12 rounded-xl border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors flex items-center justify-center"
+//                           >
+//                             +
+//                           </motion.button>
+//                         </div>
+//                       </div>
+
+//                       {/* Shipping & Total */}
+//                       <div className="pt-6 border-t border-gray-800 space-y-3">
+//                         <div className="flex justify-between text-sm">
+//                           <span className="text-gray-400">Item total:</span>
+//                           <span className="text-white font-medium">£{(parseFloat(selectedProduct.price.replace('£', '')) * quantity).toFixed(2)}</span>
+//                         </div>
+//                         <div className="flex justify-between text-sm">
+//                           <span className="text-gray-400">Shipping to {selectedCountry}:</span>
+//                           <span className="text-yellow-500 font-medium">£{shippingCost.toFixed(2)}</span>
+//                         </div>
+//                         <div className="flex justify-between text-lg font-bold pt-3 border-t border-gray-700">
+//                           <span className="text-white">Total Amount:</span>
+//                           <span className="text-yellow-500">£{(parseFloat(selectedProduct.price.replace('£', '')) * quantity + shippingCost).toFixed(2)}</span>
+//                         </div>
+//                       </div>
+
+//                       {/* Action Buttons */}
+//                       <div className="flex gap-4 pt-6">
+//                         <motion.button
+//                           whileHover={{ scale: 1.02 }}
+//                           whileTap={{ scale: 0.98 }}
+//                           onClick={handleAddToCart}
+//                           className="flex-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-black py-4 rounded-xl font-bold text-lg hover:shadow-xl hover:shadow-yellow-500/30 transition-all duration-300"
+//                         >
+//                           Add to Cart
+//                         </motion.button>
+                        
+//                         <motion.button
+//                           whileHover={{ scale: 1.02 }}
+//                           whileTap={{ scale: 0.98 }}
+//                           onClick={() => toggleWishlist(selectedProduct.id)}
+//                           className="px-6 py-4 border border-gray-700 text-white rounded-xl hover:bg-gray-800 transition-colors"
+//                         >
+//                           <Heart className={`w-6 h-6 ${wishlist.includes(selectedProduct.id) ? 'fill-red-500 text-red-500' : ''}`} />
+//                         </motion.button>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </motion.div>
+//             </motion.div>
+//           )}
+//         </AnimatePresence>
+//       </div>
+//     </section>
+//   );
+// }
+
+// // Enhanced Newsletter Signup Component
+// function NewsletterSignupSection({ onSignup }: { onSignup: () => void }) {
+//   const { setHasSignedUp, setUserData } = useUser();
+//   const [formData, setFormData] = useState({
+//     name: '',
+//     email: '',
+//     age: '',
+//     location: '',
+//     country: 'GB'
+//   });
+//   const [isSubmitting, setIsSubmitting] = useState(false);
+
+//   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+//     setFormData({
+//       ...formData,
+//       [e.target.name]: e.target.value
+//     });
+//   };
+
+//   const handleSignUp = async (e: React.FormEvent) => {
+//     e.preventDefault();
+//     setIsSubmitting(true);
+    
+//     // Simulate API call
+//     await new Promise(resolve => setTimeout(resolve, 1000));
+    
+//     setHasSignedUp(true);
+//     setUserData(formData);
+//     localStorage.setItem('yh_user', JSON.stringify(formData));
+//     onSignup();
+//     setIsSubmitting(false);
+//   };
+
+//   return (
+//     <motion.section
+//       initial={{ opacity: 0, y: 50 }}
+//       animate={{ opacity: 1, y: 0 }}
+//       className="py-20 px-4 bg-gradient-to-br from-gray-900/50 to-black/50 relative overflow-hidden"
+//     >
+//       <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/5 to-orange-500/5"></div>
+      
+//       <div className="max-w-4xl mx-auto relative">
+//         <div className="bg-gradient-to-br from-gray-900 to-black rounded-3xl border border-gray-800 p-8 md:p-12 shadow-2xl">
+//           <div className="text-center mb-10">
+//             <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full mb-6">
+//               <Music2 className="w-10 h-10 text-black" />
+//             </div>
+            
+//             <h2 className="text-4xl font-bold text-white mb-4">
+//               Join the <span className="bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">Global Community</span>
+//             </h2>
+            
+//             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+//               Be the first to access exclusive content, early releases, and VIP experiences worldwide.
+//             </p>
+            
+//             {/* Benefits Grid */}
+//             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+//               {[
+//                 { icon: '🎫', title: 'Early Access', desc: 'Concert tickets 48h before public' },
+//                 { icon: '💿', title: 'Exclusive Content', desc: 'Unreleased tracks & demos' },
+//                 { icon: '🎁', title: 'Member Perks', desc: 'Special discounts & gifts' }
+//               ].map((benefit, i) => (
+//                 <motion.div
+//                   key={i}
+//                   initial={{ opacity: 0, y: 20 }}
+//                   animate={{ opacity: 1, y: 0 }}
+//                   transition={{ delay: i * 0.1 }}
+//                   className="bg-gray-900/50 rounded-xl p-6 border border-gray-800 hover:border-yellow-500/50 transition-colors"
+//                 >
+//                   <div className="text-3xl mb-4">{benefit.icon}</div>
+//                   <h4 className="text-yellow-500 font-bold mb-2">{benefit.title}</h4>
+//                   <p className="text-gray-400 text-sm">{benefit.desc}</p>
+//                 </motion.div>
+//               ))}
+//             </div>
+//           </div>
+
+//           <form onSubmit={handleSignUp} className="space-y-8">
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//               <div>
+//                 <label className="block text-sm font-medium text-gray-300 mb-3 text-left">
+//                   Full Name *
+//                 </label>
+//                 <input
+//                   type="text"
+//                   name="name"
+//                   required
+//                   value={formData.name}
+//                   onChange={handleInputChange}
+//                   className="w-full px-5 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
+//                   placeholder="Enter your full name"
+//                 />
+//               </div>
+
+//               <div>
+//                 <label className="block text-sm font-medium text-gray-300 mb-3 text-left">
+//                   Email Address *
+//                 </label>
+//                 <input
+//                   type="email"
+//                   name="email"
+//                   required
+//                   value={formData.email}
+//                   onChange={handleInputChange}
+//                   className="w-full px-5 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
+//                   placeholder="your.email@example.com"
+//                 />
+//               </div>
+//             </div>
+
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//               <div>
+//                 <label className="block text-sm font-medium text-gray-300 mb-3 text-left">
+//                   Your City
+//                 </label>
+//                 <input
+//                   type="text"
+//                   name="location"
+//                   value={formData.location}
+//                   onChange={handleInputChange}
+//                   className="w-full px-5 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
+//                   placeholder="Where are you based?"
+//                 />
+//               </div>
+
+//               <div>
+//                 <label className="block text-sm font-medium text-gray-300 mb-3 text-left">
+//                   Country
+//                 </label>
+//                 <select
+//                   name="country"
+//                   value={formData.country}
+//                   onChange={handleInputChange}
+//                   className="w-full px-5 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent appearance-none cursor-pointer"
+//                 >
+//                   <option value="GB">🇬🇧 United Kingdom</option>
+//                   <option value="US">🇺🇸 United States</option>
+//                   <option value="CA">🇨🇦 Canada</option>
+//                   <option value="NG">🇳🇬 Nigeria</option>
+//                   <option value="GH">🇬🇭 Ghana</option>
+//                   <option value="KE">🇰🇪 Kenya</option>
+//                   <option value="ZA">🇿🇦 South Africa</option>
+//                   <option value="AU">🇦🇺 Australia</option>
+//                 </select>
+//               </div>
+//             </div>
+
+//             <div>
+//               <label className="block text-sm font-medium text-gray-300 mb-3 text-left">
+//                 Age (Optional)
+//               </label>
+//               <input
+//                 type="number"
+//                 name="age"
+//                 value={formData.age}
+//                 onChange={handleInputChange}
+//                 className="w-full px-5 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
+//                 placeholder="Your age"
+//                 min="1"
+//                 max="120"
+//               />
+//             </div>
+
+//             <motion.button
+//               type="submit"
+//               disabled={isSubmitting}
+//               whileHover={{ scale: 1.02 }}
+//               whileTap={{ scale: 0.98 }}
+//               className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-black py-5 rounded-xl font-bold text-lg hover:shadow-xl hover:shadow-yellow-500/30 transition-all duration-300 disabled:opacity-50"
+//             >
+//               {isSubmitting ? (
+//                 <span className="flex items-center justify-center gap-2">
+//                   <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+//                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+//                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+//                   </svg>
+//                   Processing...
+//                 </span>
+//               ) : (
+//                 'Join VIP Community'
+//               )}
+//             </motion.button>
+
+//             <p className="text-gray-500 text-sm text-center">
+//               By joining, you agree to receive updates about new releases and exclusive offers. 
+//               Unsubscribe anytime. We respect your privacy.
+//             </p>
+//           </form>
+//         </div>
+//       </div>
+//     </motion.section>
+//   );
+// }
+
+// // Enhanced Promotional Modal
+// function PromotionalModal({ onClose }: { onClose: () => void }) {
+//   return (
+//     <motion.div
+//       initial={{ opacity: 0 }}
+//       animate={{ opacity: 1 }}
+//       exit={{ opacity: 0 }}
+//       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-lg"
+//       onClick={(e) => {
+//         if (e.target === e.currentTarget) onClose();
+//       }}
+//     >
+//       <motion.div
+//         initial={{ scale: 0.9, opacity: 0, y: 20 }}
+//         animate={{ scale: 1, opacity: 1, y: 0 }}
+//         exit={{ scale: 0.9, opacity: 0, y: 20 }}
+//         className="relative bg-gradient-to-br from-gray-900 via-gray-900 to-black rounded-2xl md:rounded-3xl w-full max-w-4xl max-h-[85vh] md:max-h-[80vh] overflow-hidden border border-yellow-500/20 shadow-2xl"
+//       >
+//         {/* Luxury Metallic Border Effect */}
+//         <div className="absolute inset-0 pointer-events-none">
+//           <div className="absolute -inset-[1px] bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 rounded-2xl md:rounded-3xl opacity-20"></div>
+//           <div className="absolute inset-[1px] bg-gradient-to-br from-gray-900 via-gray-900 to-black rounded-2xl md:rounded-3xl"></div>
+//         </div>
+
+//         {/* Fixed Close Button - Always Visible */}
+//         <button 
+//           onClick={onClose}
+//           className="fixed md:absolute top-4 right-4 md:top-6 md:right-6 z-50 p-3 bg-black/80 backdrop-blur-sm border border-gray-700 rounded-full hover:bg-black hover:border-yellow-500 transition-all duration-300 group shadow-xl"
+//         >
+//           <svg className="w-5 h-5 text-white group-hover:text-yellow-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
+//           </svg>
+//           <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-500/0 to-yellow-500/0 group-hover:from-yellow-500/10 group-hover:to-yellow-500/10 transition-all duration-300"></div>
+//         </button>
+
+//         {/* Scrollable Content Container */}
+//         <div className="relative h-full overflow-y-auto custom-scrollbar">
+//           {/* Luxury Header Section */}
+//           <div className="relative p-6 md:p-8 pt-12 md:pt-14 bg-gradient-to-b from-yellow-500/5 via-transparent to-transparent">
+//             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent"></div>
+            
+//             <div className="text-center mb-8">
+//               {/* Animated Glowing Badge */}
+//               <motion.div
+//                 animate={{ 
+//                   boxShadow: [
+//                     "0 0 20px rgba(234, 179, 8, 0.3)",
+//                     "0 0 40px rgba(234, 179, 8, 0.5)",
+//                     "0 0 20px rgba(234, 179, 8, 0.3)"
+//                   ]
+//                 }}
+//                 transition={{ duration: 2, repeat: Infinity }}
+//                 className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full border border-yellow-500/30 mb-6"
+//               >
+//                 <Sparkles className="w-4 h-4 text-yellow-400" />
+//                 <span className="text-yellow-400 text-xs font-semibold tracking-widest uppercase">GLOBAL EXCLUSIVE</span>
+//               </motion.div>
+              
+//               <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+//                 Yoruba Healer{' '}
+//                 <span className="bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">
+//                   Premium Access
+//                 </span>
+//               </h2>
+//               <p className="text-gray-400 text-sm md:text-base">World-class experiences for global fans</p>
+//             </div>
+
+//             {/* International Flags Badge */}
+//             <div className="flex justify-center gap-2 mb-8">
+//               {['🇺🇸', '🇬🇧', '🇳🇬', '🇨🇦', '🇦🇺', '🇫🇷', '🇩🇪', '🇯🇵'].map((flag, i) => (
+//                 <motion.div
+//                   key={flag}
+//                   initial={{ y: 20, opacity: 0 }}
+//                   animate={{ y: 0, opacity: 1 }}
+//                   transition={{ delay: i * 0.05 }}
+//                   className="text-xl hover:scale-110 transition-transform cursor-help"
+//                   title="Available Worldwide"
+//                 >
+//                   {flag}
+//                 </motion.div>
+//               ))}
+//             </div>
+//           </div>
+
+//           {/* Scrollable Content Area */}
+//           <div className="p-6 md:p-8 pt-0">
+//             {/* Luxury Cards Grid */}
+//             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
+//               {[
+//                 {
+//                   icon: '🎤',
+//                   title: 'World Tour',
+//                   subtitle: 'Global Experience',
+//                   description: '30+ cities, VIP packages, meet & greet',
+//                   color: 'from-yellow-500/20 to-orange-500/20',
+//                   borderColor: 'border-yellow-500/30',
+//                   badge: 'TICKETS'
+//                 },
+//                 {
+//                   icon: '💿',
+//                   title: 'Album Vol.2',
+//                   subtitle: 'Collector\'s Edition',
+//                   description: 'Limited vinyl + digital content',
+//                   color: 'from-blue-500/20 to-cyan-500/20',
+//                   borderColor: 'border-blue-500/30',
+//                   badge: 'PRE-ORDER'
+//                 },
+//                 {
+//                   icon: '✨',
+//                   title: 'VIP Access',
+//                   subtitle: 'Members Only',
+//                   description: 'Exclusive drops & collaborations',
+//                   color: 'from-purple-500/20 to-pink-500/20',
+//                   borderColor: 'border-purple-500/30',
+//                   badge: 'EXCLUSIVE'
+//                 }
+//               ].map((item, i) => (
+//                 <motion.div
+//                   key={i}
+//                   initial={{ y: 30, opacity: 0 }}
+//                   animate={{ y: 0, opacity: 1 }}
+//                   transition={{ delay: i * 0.1 + 0.2 }}
+//                   whileHover={{ y: -5, transition: { duration: 0.2 } }}
+//                   className={`group relative bg-gradient-to-br ${item.color} backdrop-blur-sm rounded-xl p-5 border ${item.borderColor} hover:shadow-xl hover:shadow-yellow-500/10 transition-all duration-300 cursor-pointer`}
+//                 >
+//                   {/* Floating Badge */}
+//                   <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
+//                     <span className="px-3 py-1 bg-black text-yellow-400 text-xs font-bold rounded-full border border-yellow-500/30">
+//                       {item.badge}
+//                     </span>
+//                   </div>
+
+//                   <div className="text-center">
+//                     <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+//                       {item.icon}
+//                     </div>
+                    
+//                     <h4 className="text-white font-bold text-lg mb-1">{item.title}</h4>
+//                     <p className="text-yellow-400 text-sm mb-2">{item.subtitle}</p>
+//                     <p className="text-gray-300 text-xs mb-4">{item.description}</p>
+                    
+//                     <motion.button
+//                       whileHover={{ scale: 1.05 }}
+//                       whileTap={{ scale: 0.95 }}
+//                       className="w-full py-2.5 bg-black/50 border border-gray-700 text-white text-sm font-medium rounded-lg hover:border-yellow-500 hover:text-yellow-400 transition-all duration-300"
+//                     >
+//                       Learn More
+//                     </motion.button>
+//                   </div>
+//                 </motion.div>
+//               ))}
+//             </div>
+
+//             {/* Premium Features List */}
+//             <div className="mb-8">
+//               <h3 className="text-white font-bold text-lg mb-4 text-center">Global Benefits</h3>
+//               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+//                 {[
+//                   '🌍 Worldwide Shipping & Support',
+//                   '🎫 Early Access to All Events',
+//                   '📦 Free Shipping Over $150',
+//                   '🎁 Exclusive Member Gifts',
+//                   '💎 Limited Edition Products',
+//                   '👑 VIP Priority Treatment'
+//                 ].map((feature, i) => (
+//                   <motion.div
+//                     key={i}
+//                     initial={{ x: -20, opacity: 0 }}
+//                     animate={{ x: 0, opacity: 1 }}
+//                     transition={{ delay: i * 0.05 + 0.5 }}
+//                     className="flex items-center gap-3 px-4 py-3 bg-gray-900/50 rounded-lg border border-gray-800 hover:border-yellow-500/30 transition-colors"
+//                   >
+//                     <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+//                     <span className="text-gray-300 text-sm">{feature}</span>
+//                   </motion.div>
+//                 ))}
+//               </div>
+//             </div>
+
+//             {/* Testimonial */}
+//             <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-xl p-5 mb-8 border border-yellow-500/20">
+//               <div className="flex items-center gap-3 mb-3">
+//                 <div className="w-10 h-10 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center">
+//                   <span className="text-black font-bold">⭐</span>
+//                 </div>
+//                 <div>
+//                   <div className="text-white font-bold">Global Fan Experience</div>
+//                   <div className="text-yellow-400 text-xs">5,000+ Members Worldwide</div>
+//                 </div>
+//               </div>
+//               <p className="text-gray-300 text-sm italic">
+//                 "The premium access transformed my experience. Early tickets, exclusive merch, and worldwide community."
+//               </p>
+//               <div className="text-right text-xs text-gray-400 mt-2">— Sarah K., London</div>
+//             </div>
+
+//             {/* CTA Buttons */}
+//             <div className="space-y-4">
+//               <motion.button
+//                 whileHover={{ scale: 1.02 }}
+//                 whileTap={{ scale: 0.98 }}
+//                 className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-black py-4 rounded-xl font-bold text-lg hover:shadow-xl hover:shadow-yellow-500/30 transition-all duration-300 flex items-center justify-center gap-3"
+//               >
+//                 <Zap className="w-5 h-5" />
+//                 Join Global VIP List
+//                 <ArrowRight className="w-5 h-5" />
+//               </motion.button>
+              
+//               <motion.button
+//                 whileHover={{ scale: 1.02 }}
+//                 whileTap={{ scale: 0.98 }}
+//                 onClick={onClose}
+//                 className="w-full bg-transparent border-2 border-gray-700 text-gray-300 py-3.5 rounded-xl font-semibold hover:border-yellow-500 hover:text-yellow-400 transition-all duration-300"
+//               >
+//                 Continue Exploring Store
+//               </motion.button>
+//             </div>
+
+//             {/* Global Stats Footer */}
+//             <div className="mt-8 pt-6 border-t border-gray-800/50">
+//               <div className="grid grid-cols-3 gap-4 text-center">
+//                 <div>
+//                   <div className="text-yellow-400 font-bold text-xl">50K+</div>
+//                   <div className="text-gray-400 text-xs">Global Members</div>
+//                 </div>
+//                 <div>
+//                   <div className="text-yellow-400 font-bold text-xl">60+</div>
+//                   <div className="text-gray-400 text-xs">Countries</div>
+//                 </div>
+//                 <div>
+//                   <div className="text-yellow-400 font-bold text-xl">4.9★</div>
+//                   <div className="text-gray-400 text-xs">Rating</div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Add CSS for custom scrollbar */}
+//         <style jsx global>{`
+//           .custom-scrollbar {
+//             scrollbar-width: thin;
+//             scrollbar-color: rgba(234, 179, 8, 0.5) rgba(0, 0, 0, 0.1);
+//           }
+//           .custom-scrollbar::-webkit-scrollbar {
+//             width: 6px;
+//           }
+//           .custom-scrollbar::-webkit-scrollbar-track {
+//             background: rgba(0, 0, 0, 0.1);
+//             border-radius: 10px;
+//           }
+//           .custom-scrollbar::-webkit-scrollbar-thumb {
+//             background: linear-gradient(to bottom, rgba(234, 179, 8, 0.5), rgba(245, 158, 11, 0.5));
+//             border-radius: 10px;
+//           }
+//           .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+//             background: linear-gradient(to bottom, rgba(234, 179, 8, 0.8), rgba(245, 158, 11, 0.8));
+//           }
+//         `}</style>
+//       </motion.div>
+//     </motion.div>
+//   );
+// }
+
+
+
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useCart } from './context/CartContext';
 import { useUser } from './context/UserContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Heart, Sparkles, Globe, Truck, Shield, Zap, Music2, Star, ArrowRight } from 'lucide-react';
-
+import { Heart, Sparkles, Truck, Lock, Verified, Zap, ShoppingBag, ChevronLeft, ChevronRight, ArrowRight, Search, User } from 'lucide-react';
+import Footer from './components/Footer';
 
 interface Product {
   id: number;
@@ -23,205 +1199,294 @@ interface Product {
   reviewCount: number;
 }
 
-// Enhanced shipping rates with more countries
-const SHIPPING_RATES: Record<string, number> = {
-  'GB': 9.99, 'US': 14.99, 'CA': 17.99, 'FR': 11.99, 'DE': 11.99,
-  'ES': 11.99, 'IT': 11.99, 'NL': 11.99, 'BE': 11.99, 'PT': 11.99,
-  'IE': 11.99, 'AU': 19.99, 'NZ': 21.99, 'JP': 17.99, 'CN': 15.99,
-  'IN': 19.99, 'NG': 24.99, 'GH': 24.99, 'KE': 24.99, 'ZA': 21.99,
-  'BR': 21.99, 'MX': 17.99, 'AR': 19.99, 'CL': 19.99, 'AE': 17.99,
-  'SA': 17.99, 'QA': 17.99, 'SG': 14.99, 'MY': 15.99, 'ID': 17.99,
-  'KR': 14.99, 'RU': 19.99, 'TR': 14.99,
-};
-
 export default function Home() {
-  const { hasSignedUp, setHasSignedUp, setUserData, hasPurchased, setHasPurchased, selectedCountry, setSelectedCountry } = useUser();
-  const { cart } = useCart();
+  const { hasSignedUp, setHasSignedUp } = useUser();
+  const { cart, getTotalItems } = useCart();
   const [showPromoModal, setShowPromoModal] = useState(false);
-  const [showSignupSection, setShowSignupSection] = useState(false);
-  const [showFloatingSignup, setShowFloatingSignup] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [isScrolled, setIsScrolled] = useState(false);
   
   useEffect(() => {
     const handleScroll = () => {
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
       const progress = (window.scrollY / totalScroll) * 100;
       setScrollProgress(progress);
-      setIsScrolled(window.scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    if (cart.length > 0 && !hasSignedUp) {
-      setShowSignupSection(true);
-      if (!hasPurchased) {
-        setHasPurchased(true);
-      }
-    } else {
-      setShowSignupSection(false);
-    }
-  }, [cart, hasSignedUp, hasPurchased, setHasPurchased]);
-
-  useEffect(() => {
-    if (!hasSignedUp && !showSignupSection) {
-      const timer = setTimeout(() => {
-        setShowFloatingSignup(true);
-      }, 10000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [hasSignedUp, showSignupSection]);
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black font-sans">
-      {/* Animated Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
-      </div>
-
-      {/* Progress Bar */}
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-800 z-50">
-        <motion.div 
-          className="h-full bg-gradient-to-r from-yellow-500 to-orange-500"
+    <div className="min-h-screen bg-white font-sans">
+      {/* Progress Bar - Fixed at the top */}
+      <div className="fixed top-0 left-0 w-full h-1 bg-gray-100 z-50">
+        <div 
+          className="h-full bg-black"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
 
-      {/* Enhanced Promotional Banner */}
-      <motion.div 
-        initial={{ y: -50 }}
-        animate={{ y: 0 }}
-        className="bg-gradient-to-r from-yellow-500 via-orange-500 to-yellow-500 text-black py-3 px-4 sticky top-0 z-40 border-b border-yellow-600/50"
-      >
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <Sparkles className="w-5 h-5 animate-spin-slow" />
-              <div className="absolute -inset-1 bg-yellow-400/30 rounded-full blur-sm"></div>
+      {/* Hero Section - Flush with navbar */}
+      <section className="relative h-[85vh] overflow-hidden group mt-0">
+        <div className="absolute inset-0 hero-zoom">
+          <Image
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTRpWsRwoZd9yZ6bM9wYZggDLCXp3_kUrZn2u_Dnbkehm2nPK4WUyKEm81WRThY31HF4uHHusullDSVDbzVAWc-7NY3q4OcwBi-updGcRl9HVMLCCc93B2m3itvZqDnaTN-qPWmtm3gbCTQ4JPkNB4I7di9niws-w3E0RX3t1gFGFOTVQVuFNPSGQFQqkm1Qf2MfA6xhhHcejGY37evOzP3gUSLb0Kvv6xfta2JPLGC8B07xMgftn0gxLxNCFCYZY4DMsyUWxNW2E"
+            alt="Premium Streetwear Lifestyle"
+            fill
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/30"></div>
+        </div>
+        <div className="absolute inset-0 flex items-end pb-24 px-4 md:px-12">
+          <div className="max-w-7xl mx-auto w-full">
+            <p className="text-white text-xs font-bold uppercase tracking-[0.3em] mb-4">Just Landed</p>
+            <h1 className="text-white text-5xl md:text-7xl font-bold uppercase mb-8 leading-none">
+              New Arrivals<br/>Heritage Collection
+            </h1>
+            <a 
+              href="/productlist.html" 
+              className="inline-block bg-white text-black px-10 py-4 font-bold uppercase text-xs hover:bg-black hover:text-white transition-all duration-300"
+            >
+              Shop Now
+            </a>
+          </div>
+        </div>
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-3">
+          <div className="w-2 h-2 rounded-full bg-white"></div>
+          <div className="w-2 h-2 rounded-full bg-white/40"></div>
+          <div className="w-2 h-2 rounded-full bg-white/40"></div>
+        </div>
+      </section>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 py-16 space-y-24">
+        {/* New Arrivals Section */}
+        <section>
+          <div className="flex justify-between items-end mb-8">
+            <h2 className="text-2xl font-bold uppercase tracking-tight">New Arrivals</h2>
+            <div className="flex items-center space-x-4">
+              <button className="text-xs font-bold uppercase underline underline-offset-4">
+                View All
+              </button>
+              <div className="flex space-x-1">
+                <button className="p-1 border border-gray-200 hover:border-black transition-colors">
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button className="p-1 border border-gray-200 hover:border-black transition-colors">
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
-            <span className="font-bold text-sm sm:text-base tracking-wide uppercase flex items-center gap-2">
-              <Music2 className="w-4 h-4 animate-pulse" />
-              PREMIERE: YORUBA HEALER VOL. 2 - GLOBAL TOUR ANNOUNCEMENT
-            </span>
           </div>
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setShowPromoModal(true)}
-            className="relative overflow-hidden group bg-black text-yellow-400 px-6 py-2 rounded-full text-sm font-semibold hover:bg-gray-900 transition-all duration-300"
-          >
-            <span className="relative z-10 flex items-center gap-2">
-              <Zap className="w-4 h-4 group-hover:animate-bounce" />
-              GET VIP ACCESS
-            </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-          </motion.button>
-        </div>
-      </motion.div>
+          
+          <MerchSection />
+        </section>
 
-      {/* Hero Section */}
-      {/* <header className="relative py-16 px-4 overflow-hidden">
-        <div className="max-w-7xl mx-auto">
-          <div className="relative z-10 text-center">
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="relative w-48 h-48 mx-auto mb-8"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full blur-2xl opacity-30 animate-pulse"></div>
+        {/* Categories Section */}
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="relative group overflow-hidden aspect-[4/5] bg-gray-50">
+            <Image
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHXIvfxFx2CiPnpENTYZFzNai6TbNhdFKzyeqM_KkBqFeVBUNehSmxzX3zDB_SPo_P8tcwOY-yKNJIrpQQsNUjI0DiY0PI6U60HMgJDE_8hb1IfPuU_fNYUORaTcllOTDDqUFvwe85tGYjeynNroF4VWufiH_-_n2pvvOEq10ph-qRpI7E1HH2ZJ5vwVuVJopVG-CprFKNSkc1023vboAgEk6tD7NnLbfI2mK2ds64yAgAWlnpCPrZBWxL_9GDCB--0VAM-Z-jKgA"
+              alt="Men's Collection"
+              fill
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute inset-0 bg-black/10"></div>
+            <div className="absolute bottom-8 left-8">
+              <h3 className="text-white text-2xl font-bold uppercase">Men</h3>
+              <p className="text-white/80 text-[10px] uppercase mb-4 tracking-widest">Elevated Street Style</p>
+              <button className="text-white text-xs font-bold border-b border-white pb-1 hover:border-gray-300 transition-colors">
+                Shop Now
+              </button>
+            </div>
+          </div>
+          
+          <div className="relative group overflow-hidden aspect-[4/5] bg-gray-50">
+            <Image
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgTvqbYXrCz0kmJ_gqvvgEkYSzx0B2CLagaCHS_ljQjat83PeXec1eBIhkEKFd_epYlMAcrHajm0YJT7sffV27zDCww-U581Zd9qbj4HG2VdLt5qBEWCEgGFoTPHBQ9u-cBLxEzDq9C7qQVog5g7WByY1rmukbPah3X2_FwHkPn4YekNaqxZ6bRM57ClUJghwBoHtHWVmV7vFS7ky0YW_qgaTtmQV7t3EM_ZxAjMN_2KEB0ICvsBBYm-REGoRYwbibTRKdw6VvKmc"
+              alt="Women's Collection"
+              fill
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute inset-0 bg-black/10"></div>
+            <div className="absolute bottom-8 left-8">
+              <h3 className="text-white text-2xl font-bold uppercase">Women</h3>
+              <p className="text-white/80 text-[10px] uppercase mb-4 tracking-widest">Modern Femininity</p>
+              <button className="text-white text-xs font-bold border-b border-white pb-1 hover:border-gray-300 transition-colors">
+                Shop Now
+              </button>
+            </div>
+          </div>
+          
+          <div className="relative group overflow-hidden aspect-[4/5] bg-gray-50">
+            <Image
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6NYH4NiIFhq3IEc0tjR5-kPy5UOjn4CDAEWBuxRHThWAyx00UCyOtDbw_vHS6jPWh5P6Q6pY1UkysmQibb8-G5pZ0lKXrkirighkpyd4ChyyvimyJJoCT5czMzFK-EExFTzlmZEjCd3BE3wjJh61pWUEPNa0kL-tBwGydwOLTDofYR1VxuC6-pRCP5YbAGK2yikUFI9WXH0lC7cqzOan3EbJLoBMbaHJHX0m3WSFGX9egbxeeMwd0mdtYHCmDwPWdC1Uuholma8k"
+              alt="Accessories"
+              fill
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute inset-0 bg-black/10"></div>
+            <div className="absolute bottom-8 left-8">
+              <h3 className="text-white text-2xl font-bold uppercase">Accessories</h3>
+              <p className="text-white/80 text-[10px] uppercase mb-4 tracking-widest">Finish The Look</p>
+              <button className="text-white text-xs font-bold border-b border-white pb-1 hover:border-gray-300 transition-colors">
+                Shop Now
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Heritage Banner */}
+        <section className="relative h-[600px] group overflow-hidden">
+          <Image
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCE3vQO2tpRafXqrXuyC-9agZ3LnlbjFnKJ-TbCpsxMjGSLeHy6D3qN2Oi187LK59X0DOjTdWYBMhn273R8h9asGSf7N3JGlaAY72plTudyy2XFDFUkLVVRXu29LvxJwZeBeXUexKg1rYBwqz8VBputnRpfSjkbsQsR_CDXWTJZlm_n4m0oYXkXG1zmb3tRWqEwSEQPP2bnumNpoCHznnvzagQXN9Lwguevwyq_MLtB3AkjA0PcVyz1ikLQIO83hjrO6uIPF5efG9s"
+            alt="Heritage Banner"
+            fill
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+          />
+          <div className="absolute inset-0 bg-black/20"></div>
+          <div className="absolute left-12 bottom-12 max-w-md">
+            <h2 className="text-white text-4xl font-bold uppercase mb-4 leading-none">The Heritage Manor</h2>
+            <button className="inline-block bg-white text-black px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all duration-300">
+              Explore Collection
+            </button>
+          </div>
+        </section>
+
+        {/* Styling Ideas Section */}
+        <section>
+          <div className="flex justify-between items-center mb-10">
+            <h2 className="text-2xl font-bold uppercase">Styling Ideas</h2>
+            <div className="flex space-x-2">
+              <button className="w-10 h-10 border border-gray-200 flex items-center justify-center rounded-full hover:border-black transition-colors">
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button className="w-10 h-10 border border-gray-200 flex items-center justify-center rounded-full hover:border-black transition-colors">
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="md:col-span-1 relative h-[400px]">
               <Image
-                src="/yhimg.png"
-                alt="Yoruba Healer"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbyvW0J4mIkJeosBmlG2fwXkHvlOF8jB5yxB2no9_dWQH6HwETi28ciKKxwMDphnZV-weLNkEndR1BCpcSaH3e9pynZkKwkLOJXPIKu2evz7kG5bGJMXQsknU3i8PElIPYIUPBpe1usD--BKW_E-h2tFiFeSIcbJQsuIDrOhd0Vk-hkr6kH4HYbkJYwY6mD4_I67TQyPW7Eyhco5JXgk8FXD7BOsynaeqMjmzoz479oolxdjZ3RLIukBa8VugFytrx7RUfhK8lMj8"
+                alt="Lookbook"
                 fill
-                className="object-contain relative z-10 drop-shadow-2xl"
-                priority
+                className="h-full w-full object-cover"
               />
-            </motion.div>
+              <button className="absolute bottom-6 left-6 bg-white px-6 py-3 text-[10px] font-bold uppercase hover:bg-black hover:text-white transition-colors duration-300">
+                Add To Cart
+              </button>
+            </div>
             
-            <motion.h1 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent mb-6"
-            >
-              YORUBA HEALER
-            </motion.h1>
-            
-            <motion.p 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed"
-            >
-              Global Music. Premium Merchandise. Exclusive Experiences.
-            </motion.p>
-
-            
-            <motion.div 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="flex flex-wrap items-center justify-center gap-6 mb-12"
-            >
-              <div className="flex items-center gap-2 text-gray-400">
-                <Globe className="w-5 h-5 text-yellow-500" />
-                <span className="text-sm">Worldwide Shipping</span>
+            <div className="md:col-span-3 grid grid-cols-3 gap-4">
+              <div className="space-y-4">
+                <div className="bg-gray-50 aspect-square p-8">
+                  <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                    <Image
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqeAITNAUXJD09qUu_8wgezoexexjWI1eul55Q3Trv1eASUQvPDYGJALXvja42VZz9HZWEWO188p9mS6cTBm4SGi14_5mouIUGATuks5PVZxngyULQLKtx2MrgvkB2yk8z7pLYUqxjajvyHxRhwZQECBrnkY_snaQqcEdrIjt7pWwcpmYO23ITgBH4NRwLP-fCdwQJZv2f8bzgj48ljzSKJzphLekWaRqafSfsTONhrpeoQ8BrFCtzLWoL0v0Feqn7qt0kNutmizM"
+                      alt="Denim Jacket"
+                      width={300}
+                      height={300}
+                      className="object-contain mix-blend-multiply"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Outerwear</p>
+                  <h4 className="text-xs font-bold uppercase mt-1">Heritage Denim Jacket</h4>
+                  <p className="text-xs mt-1">£250.00</p>
+                </div>
               </div>
-              <div className="flex items-center gap-2 text-gray-400">
-                <Shield className="w-5 h-5 text-yellow-500" />
-                <span className="text-sm">Authentic Products</span>
+              
+              <div className="space-y-4">
+                <div className="bg-gray-50 aspect-square p-8">
+                  <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                    <Image
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAaz5DU0hdo5dxyiXftkFxkqOGgaID974alFABPmNuZvR-iz8nXzEFMYXpfLEVUbx0hheltljBq_cNL08jO2a_YaWc9zl1_Jzr_WyssJLFqsIyp0vq11c1iroyDhtyCMby2_7SVLl5r53uiQJ6b-kviQTFvcn2k19OuYZGaP5PH0inaBPlqpJxZyig1BtnPMOwmONsjCpWjYehYqfkcvIG7ZNppAFxsv3Cc9znyiCWhEt-k3nqwXPTXVA2L3GseS7QrV1j-Of7xiE"
+                      alt="T-Shirt"
+                      width={300}
+                      height={300}
+                      className="object-contain mix-blend-multiply"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Essentials</p>
+                  <h4 className="text-xs font-bold uppercase mt-1">Core Logo Tank</h4>
+                  <p className="text-xs mt-1">£95.00</p>
+                </div>
               </div>
-              <div className="flex items-center gap-2 text-gray-400">
-                <Truck className="w-5 h-5 text-yellow-500" />
-                <span className="text-sm">Express Delivery</span>
+              
+              <div className="space-y-4">
+                <div className="bg-gray-50 aspect-square p-8">
+                  <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                    <Image
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGTvCw7J9_eFkMeKcoXI5U39xIU_ys9UMhdHL15Yv1KYisWhsRNQOQu3ICT8hu6uW0YNAfN0qIscIa0H74i9UfEsJfWkM5tIU8cWVAZ8e0WDuwtPlYI-NQPy0JCbW_cC6SqW0xJltKgzfquUgp68sQsDo6EvUtkp70ymU0bABafwke5b2TunIdwmVW-nGrJO5t4Qa0KADZRWcYrmytDeuosfifltMcZRAhO4SoFEt0mzLmuYbE6w8158ZHIJI6fGlB9unMeTegKrU"
+                      alt="Pants"
+                      width={300}
+                      height={300}
+                      className="object-contain mix-blend-multiply"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Bottoms</p>
+                  <h4 className="text-xs font-bold uppercase mt-1">Signature Flare Pants</h4>
+                  <p className="text-xs mt-1">£180.00</p>
+                </div>
               </div>
-            </motion.div>
+            </div>
           </div>
-        </div>
-      </header> */}
+        </section>
 
-      {/* Main Merch Section */}
-      <MerchSection />
-      
-      {/* Floating Signup Button */}
-      <AnimatePresence>
-        {showFloatingSignup && !hasSignedUp && !showSignupSection && (
-          <motion.div
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 100, opacity: 0 }}
-            className="fixed bottom-6 right-6 z-40"
-          >
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setShowPromoModal(true)}
-              className="relative group bg-gradient-to-r from-yellow-500 to-orange-500 text-black px-8 py-4 rounded-2xl font-bold shadow-2xl hover:shadow-yellow-500/30 transition-all duration-300 flex items-center gap-3"
-            >
-              <div className="absolute inset-0 bg-white/20 rounded-2xl blur-md group-hover:blur-xl transition-all duration-300"></div>
-              <span className="relative z-10 flex items-center gap-3">
-                <Music2 className="w-6 h-6 animate-pulse" />
-                <span className="text-lg">Join VIP List</span>
-                <Sparkles className="w-5 h-5" />
-              </span>
-            </motion.button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        {/* Newsletter Section */}
+        <section className="bg-gray-50 py-20 px-4 text-center">
+          <h2 className="text-4xl font-bold uppercase mb-4 tracking-tight italic">Be First. Never Follow.</h2>
+          <p className="text-xs text-gray-500 uppercase tracking-widest mb-10">
+            Join our mailing list for exclusive drops and limited collections.
+          </p>
+          <form className="max-w-md mx-auto flex">
+            <input 
+              className="flex-1 bg-white border border-gray-200 px-6 py-4 text-xs outline-none focus:ring-0" 
+              placeholder="email@example.com" 
+              type="email"
+            />
+            <button className="bg-black text-white px-8 py-4 text-xs font-bold uppercase hover:bg-gray-800 transition-colors duration-300" type="submit">
+              Subscribe
+            </button>
+          </form>
+        </section>
 
-      {/* Newsletter Signup Section */}
-      {showSignupSection && (
-        <NewsletterSignupSection onSignup={() => {
-          setShowSignupSection(false);
-          setShowFloatingSignup(false);
-        }} />
-      )}
+        {/* Features Section */}
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-8 py-12 border-y border-gray-100">
+          <div className="text-center space-y-3">
+            <Verified className="w-8 h-8 mx-auto text-gray-600" />
+            <h4 className="text-[10px] font-bold uppercase tracking-widest">Secured Payment</h4>
+            <p className="text-[9px] text-gray-500 uppercase">Shop with peace of mind</p>
+          </div>
+          <div className="text-center space-y-3">
+            <Truck className="w-8 h-8 mx-auto text-gray-600" />
+            <h4 className="text-[10px] font-bold uppercase tracking-widest">Global Shipping</h4>
+            <p className="text-[9px] text-gray-500 uppercase">Fast worldwide delivery</p>
+          </div>
+          <div className="text-center space-y-3">
+            <Sparkles className="w-8 h-8 mx-auto text-gray-600" />
+            <h4 className="text-[10px] font-bold uppercase tracking-widest">Live Support</h4>
+            <p className="text-[9px] text-gray-500 uppercase">Real-time assistance</p>
+          </div>
+          <div className="text-center space-y-3">
+            <Lock className="w-8 h-8 mx-auto text-gray-600" />
+            <h4 className="text-[10px] font-bold uppercase tracking-widest">Easy Checkout</h4>
+            <p className="text-[9px] text-gray-500 uppercase">One-click experience</p>
+          </div>
+        </section>
+      </main>
+
+      {/* Footer Component */}
+      <Footer />
 
       {/* Promotional Modal */}
       {showPromoModal && (
@@ -231,102 +1496,67 @@ export default function Home() {
   );
 }
 
-// Enhanced Merch Section Component
+// Updated MerchSection Component with proper cart integration
 function MerchSection() {
   const { addToCart } = useCart();
-  const { selectedCountry, setHasPurchased } = useUser();
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState('');
-  const [selectedColor, setSelectedColor] = useState('');
   const [wishlist, setWishlist] = useState<number[]>([]);
   
-  const shippingCost = SHIPPING_RATES[selectedCountry] || 19.99;
-
   const merchProducts: Product[] = [
     {
       id: 1,
-      name: "Signature Hoodie",
-      price: "£89.99",
+      name: "Heritage Signet T-Shirt / Green",
+      price: "£125.00",
       image: "/hoodie.jpg",
-      description: "Premium black hoodie with gold embroidery",
+      description: "Premium hoodie with gold embroidery",
       status: "Pre-order",
-      fullDescription: "Crafted from premium heavyweight cotton, this black hoodie features intricate gold embroidery of the Yoruba Healer logo. Perfect for everyday comfort.",
+      fullDescription: "Crafted from premium heavyweight cotton.",
       sizes: ["S", "M", "L", "XL", "XXL"],
-      colors: ["Midnight Black", "Royal Navy", "Charcoal"],
+      colors: ["Green"],
       category: "Apparel",
       rating: 4.9,
       reviewCount: 234
     },
     {
       id: 2,
-      name: "Limited Edition T-Shirt",
-      price: "£49.99",
+      name: "Street Logo T-Shirt / Black",
+      price: "£125.00",
       image: "/hoodie.jpg",
       description: "Classic cotton tee with exclusive artwork",
       status: "Pre-order",
-      fullDescription: "100% premium cotton tee featuring exclusive Yoruba Healer artwork on the front. Soft, breathable, and perfect for daily wear.",
+      fullDescription: "100% premium cotton tee featuring exclusive artwork.",
       sizes: ["S", "M", "L", "XL"],
-      colors: ["Pure White", "Midnight Black", "Ash Gray"],
+      colors: ["Black"],
       category: "Apparel",
       rating: 4.8,
       reviewCount: 189
     },
     {
       id: 3,
-      name: "Collector's Cap",
-      price: "£39.99",
+      name: "Graffiti Trucker Cap / Black",
+      price: "£45.00",
       image: "/brondy.jpg",
       description: "Structured cap with metallic logo",
       status: "Pre-order",
-      fullDescription: "Structured six-panel cap with a curved visor and metallic Yoruba Healer logo patch. Adjustable strap for perfect fit.",
+      fullDescription: "Structured six-panel cap with metallic logo patch.",
       sizes: ["One Size"],
-      colors: ["Black", "Navy", "Olive"],
+      colors: ["Black"],
       category: "Accessories",
       rating: 4.7,
       reviewCount: 156
     },
     {
       id: 4,
-      name: "Vinyl Album Package",
-      price: "£69.99",
+      name: "Modern Healer Tee / Neon",
+      price: "£125.00",
       image: "/shortie.jpg",
-      description: "Limited edition vinyl + digital download",
+      description: "Limited edition tee",
       status: "Pre-order",
-      fullDescription: "Limited edition 180g vinyl featuring exclusive artwork. Includes digital download code and exclusive booklet.",
-      sizes: ["12-inch"],
-      colors: ["Clear", "Black", "Gold Swirl"],
-      category: "Music",
+      fullDescription: "Limited edition premium tee.",
+      sizes: ["S", "M", "L", "XL"],
+      colors: ["Neon"],
+      category: "Apparel",
       rating: 5.0,
       reviewCount: 312
-    },
-    {
-      id: 5,
-      name: "Complete Collection Bundle",
-      price: "£199.99",
-      image: "/hoodie.jpg",
-      description: "Full merch collection + digital content",
-      status: "Exclusive",
-      fullDescription: "The ultimate bundle including hoodie, tee, cap, and vinyl. Plus access to exclusive digital content and early releases.",
-      sizes: ["Bundle"],
-      colors: ["Complete Set"],
-      category: "Bundles",
-      rating: 4.9,
-      reviewCount: 89
-    },
-    {
-      id: 6,
-      name: "Premium Track Jacket",
-      price: "£104.99",
-      image: "/hoodie.jpg",
-      description: "Lightweight jacket with detailed embroidery",
-      status: "Limited",
-      fullDescription: "Lightweight track jacket with detailed embroidery on chest and sleeves. Perfect for layering and style.",
-      sizes: ["S", "M", "L", "XL"],
-      colors: ["Black", "Navy", "Burgundy"],
-      category: "Apparel",
-      rating: 4.8,
-      reviewCount: 167
     },
   ];
 
@@ -338,584 +1568,51 @@ function MerchSection() {
     );
   };
 
-  const openProductModal = (product: Product) => {
-    setSelectedProduct(product);
-    setQuantity(1);
-    setSelectedSize(product.sizes?.[0] || '');
-    setSelectedColor(product.colors?.[0] || '');
-  };
-
-  const closeProductModal = () => {
-    setSelectedProduct(null);
-    setQuantity(1);
-  };
-
-  const handleAddToCart = () => {
-    if (selectedProduct) {
-      const basePrice = parseFloat(selectedProduct.price.replace('£', ''));
-      const totalPrice = (basePrice * quantity) + shippingCost;
-      
-      addToCart({
-        id: selectedProduct.id,
-        name: selectedProduct.name,
-        price: `£${totalPrice.toFixed(2)}`,
-        basePrice: basePrice,
-        shipping: shippingCost,
-        size: selectedSize,
-        color: selectedColor,
-        image: undefined
-      }, quantity);
-
-      setHasPurchased(true);
-      closeProductModal();
-    }
-  };
-
-  const incrementQuantity = () => setQuantity(prev => prev + 1);
-  const decrementQuantity = () => setQuantity(prev => Math.max(1, prev - 1));
-
-  return (
-    <section className="py-20 px-4 relative">
-      <div className="max-w-7xl mx-auto">
-{/* Enhanced Section Header - Refined */}
-<motion.div 
-  initial={{ y: 30, opacity: 0 }}
-  whileInView={{ y: 0, opacity: 1 }}
-  viewport={{ once: true }}
-  className="text-center mb-12"
->
-  <div className="inline-flex items-center gap-2 mb-3 px-3 py-1.5 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-full border border-yellow-500/20">
-    <Sparkles className="w-3 h-3 text-yellow-500" />
-    <span className="text-yellow-500 text-xs font-medium uppercase tracking-wider">Premium Collection</span>
-  </div>
-  
-  <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-    Global Merchandise
-    <span className="block text-lg md:text-xl text-gray-400 font-normal mt-1">Curated for Worldwide Fans</span>
-  </h2>
-  
-  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl mx-auto mt-8">
-    <div className="text-center p-3 bg-gray-900/30 rounded-lg border border-gray-800 hover:border-yellow-500/30 transition-colors">
-      <div className="text-xl font-bold text-yellow-500">100%</div>
-      <div className="text-gray-400 text-xs">Authentic</div>
-    </div>
-    <div className="text-center p-3 bg-gray-900/30 rounded-lg border border-gray-800 hover:border-yellow-500/30 transition-colors">
-      <div className="text-xl font-bold text-yellow-500">48H</div>
-      <div className="text-gray-400 text-xs">Fast Dispatch</div>
-    </div>
-    <div className="text-center p-3 bg-gray-900/30 rounded-lg border border-gray-800 hover:border-yellow-500/30 transition-colors">
-      <div className="text-xl font-bold text-yellow-500">60+</div>
-      <div className="text-gray-400 text-xs">Countries</div>
-    </div>
-    <div className="text-center p-3 bg-gray-900/30 rounded-lg border border-gray-800 hover:border-yellow-500/30 transition-colors">
-      <div className="text-xl font-bold text-yellow-500">24/7</div>
-      <div className="text-gray-400 text-xs">Support</div>
-    </div>
-  </div>
-</motion.div>
-
-        {/* Products Grid with Enhanced Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {merchProducts.map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ y: 50, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="group relative"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/0 via-yellow-500/5 to-yellow-500/0 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-              
-              <div 
-                className="relative bg-gray-900/40 backdrop-blur-sm rounded-2xl p-6 border border-gray-800 group-hover:border-yellow-500/50 transition-all duration-500 hover:scale-[1.02] cursor-pointer group-hover:shadow-2xl group-hover:shadow-yellow-500/10"
-                onClick={() => openProductModal(product)}
-              >
-                {/* Product Image */}
-                <div className="relative h-80 mb-6 rounded-xl overflow-hidden bg-gradient-to-br from-gray-900 to-black">
-                  {product.image ? (
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <Music2 className="w-20 h-20 text-gray-700" />
-                    </div>
-                  )}
-                  
-                  {/* Status Badge */}
-                  <div className="absolute top-4 left-4">
-                    <div className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
-                      product.status === 'Exclusive' 
-                        ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black' 
-                        : product.status === 'Limited'
-                        ? 'bg-gradient-to-r from-red-600 to-pink-600 text-white'
-                        : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                    } shadow-lg`}>
-                      {product.status}
-                    </div>
-                  </div>
-                  
-                  {/* Wishlist Button */}
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleWishlist(product.id);
-                    }}
-                    className="absolute top-4 right-4 p-2.5 bg-black/60 backdrop-blur-sm rounded-full hover:bg-black/80 transition-colors"
-                  >
-                    <Heart className={`w-5 h-5 ${wishlist.includes(product.id) ? 'fill-red-500 text-red-500' : 'text-white'}`} />
-                  </button>
-                  
-                  {/* Quick View Overlay */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white font-medium text-sm">
-                      Quick View
-                    </div>
-                  </div>
-                </div>
-
-                {/* Product Info */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-yellow-500 font-medium">{product.category}</span>
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                      <span className="text-sm text-white font-medium">{product.rating}</span>
-                      <span className="text-xs text-gray-500">({product.reviewCount})</span>
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-yellow-400 transition-colors">{product.name}</h3>
-                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">{product.description}</p>
-                  
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-800">
-                    <div>
-                      <div className="text-yellow-500 text-2xl font-bold">{product.price}</div>
-                      <div className="text-gray-500 text-xs">+ shipping</div>
-                    </div>
-                    
-                    <motion.button 
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openProductModal(product);
-                      }}
-                      className="px-5 py-2.5 bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 text-white rounded-lg text-sm font-medium hover:from-gray-700 hover:to-gray-800 transition-all duration-200"
-                    >
-                      Select Options
-                    </motion.button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Enhanced Product Modal */}
-        <AnimatePresence>
-          {selectedProduct && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md"
-            >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                className="relative bg-gradient-to-br from-gray-900 to-black rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-gray-800 shadow-2xl"
-              >
-                {/* Close Button */}
-                <button 
-                  onClick={closeProductModal}
-                  className="absolute top-6 right-6 z-10 p-2 bg-gray-900/80 backdrop-blur-sm rounded-full hover:bg-gray-800 transition-colors"
-                >
-                  <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
-                  </svg>
-                </button>
-
-                <div className="p-8">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Product Image Gallery */}
-                    <div className="space-y-4">
-                      <div className="relative h-96 rounded-2xl overflow-hidden bg-gradient-to-br from-gray-900 to-black">
-                        {selectedProduct.image && (
-                          <Image
-                            src={selectedProduct.image}
-                            alt={selectedProduct.name}
-                            fill
-                            className="object-cover"
-                            priority
-                          />
-                        )}
-                        <div className="absolute top-4 left-4">
-                          <div className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
-                            selectedProduct.status === 'Exclusive' 
-                              ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black' 
-                              : selectedProduct.status === 'Limited'
-                              ? 'bg-gradient-to-r from-red-600 to-pink-600 text-white'
-                              : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                          }`}>
-                            {selectedProduct.status}
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Thumbnails */}
-                      <div className="grid grid-cols-3 gap-3">
-                        {[1, 2, 3].map((i) => (
-                          <div key={i} className="h-24 rounded-lg bg-gray-800 border border-gray-700 hover:border-yellow-500 cursor-pointer transition-colors"></div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Product Details */}
-                    <div className="space-y-6">
-                      <div>
-                        <h3 className="text-3xl font-bold text-white mb-2">{selectedProduct.name}</h3>
-                        <div className="flex items-center gap-4 mb-4">
-                          <div className="flex items-center gap-1">
-                            {[...Array(5)].map((_, i) => (
-                              <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                            ))}
-                            <span className="text-sm text-gray-400 ml-2">({selectedProduct.reviewCount} reviews)</span>
-                          </div>
-                          <span className="text-sm text-green-500">In Stock</span>
-                        </div>
-                        
-                        <div className="text-yellow-500 text-4xl font-bold mb-6">{selectedProduct.price}</div>
-                        
-                        <p className="text-gray-300 leading-relaxed">{selectedProduct.fullDescription}</p>
-                      </div>
-
-                      {/* Size Selection */}
-                      {selectedProduct.sizes && selectedProduct.sizes.length > 0 && (
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-3">Select Size</label>
-                          <div className="flex flex-wrap gap-2">
-                            {selectedProduct.sizes.map((size) => (
-                              <motion.button
-                                key={size}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() => setSelectedSize(size)}
-                                className={`px-5 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                                  selectedSize === size
-                                    ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black shadow-lg'
-                                    : 'bg-gray-800 border border-gray-700 text-gray-300 hover:border-yellow-500 hover:text-white'
-                                }`}
-                              >
-                                {size}
-                              </motion.button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Color Selection */}
-                      {selectedProduct.colors && selectedProduct.colors.length > 0 && (
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-3">Select Color</label>
-                          <div className="flex flex-wrap gap-2">
-                            {selectedProduct.colors.map((color) => (
-                              <motion.button
-                                key={color}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() => setSelectedColor(color)}
-                                className={`px-5 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                                  selectedColor === color
-                                    ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black shadow-lg'
-                                    : 'bg-gray-800 border border-gray-700 text-gray-300 hover:border-yellow-500 hover:text-white'
-                                }`}
-                              >
-                                {color}
-                              </motion.button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Quantity Selector */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-3">Quantity</label>
-                        <div className="flex items-center space-x-4">
-                          <motion.button
-                            whileTap={{ scale: 0.9 }}
-                            onClick={decrementQuantity}
-                            className="w-12 h-12 rounded-xl border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors flex items-center justify-center"
-                          >
-                            -
-                          </motion.button>
-                          <span className="text-2xl font-bold text-white w-12 text-center">{quantity}</span>
-                          <motion.button
-                            whileTap={{ scale: 0.9 }}
-                            onClick={incrementQuantity}
-                            className="w-12 h-12 rounded-xl border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors flex items-center justify-center"
-                          >
-                            +
-                          </motion.button>
-                        </div>
-                      </div>
-
-                      {/* Shipping & Total */}
-                      <div className="pt-6 border-t border-gray-800 space-y-3">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-400">Item total:</span>
-                          <span className="text-white font-medium">£{(parseFloat(selectedProduct.price.replace('£', '')) * quantity).toFixed(2)}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-400">Shipping to {selectedCountry}:</span>
-                          <span className="text-yellow-500 font-medium">£{shippingCost.toFixed(2)}</span>
-                        </div>
-                        <div className="flex justify-between text-lg font-bold pt-3 border-t border-gray-700">
-                          <span className="text-white">Total Amount:</span>
-                          <span className="text-yellow-500">£{(parseFloat(selectedProduct.price.replace('£', '')) * quantity + shippingCost).toFixed(2)}</span>
-                        </div>
-                      </div>
-
-                      {/* Action Buttons */}
-                      <div className="flex gap-4 pt-6">
-                        <motion.button
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={handleAddToCart}
-                          className="flex-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-black py-4 rounded-xl font-bold text-lg hover:shadow-xl hover:shadow-yellow-500/30 transition-all duration-300"
-                        >
-                          Add to Cart
-                        </motion.button>
-                        
-                        <motion.button
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={() => toggleWishlist(selectedProduct.id)}
-                          className="px-6 py-4 border border-gray-700 text-white rounded-xl hover:bg-gray-800 transition-colors"
-                        >
-                          <Heart className={`w-6 h-6 ${wishlist.includes(selectedProduct.id) ? 'fill-red-500 text-red-500' : ''}`} />
-                        </motion.button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </section>
-  );
-}
-
-// Enhanced Newsletter Signup Component
-function NewsletterSignupSection({ onSignup }: { onSignup: () => void }) {
-  const { setHasSignedUp, setUserData } = useUser();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    age: '',
-    location: '',
-    country: 'GB'
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setHasSignedUp(true);
-    setUserData(formData);
-    localStorage.setItem('yh_user', JSON.stringify(formData));
-    onSignup();
-    setIsSubmitting(false);
+  const handleAddToCart = (product: Product) => {
+    const basePrice = parseFloat(product.price.replace('£', ''));
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      basePrice: basePrice,
+      shipping: 0, // Free shipping
+      size: product.sizes?.[0] || '',
+      color: product.colors?.[0] || '',
+      image: product.image
+    }, 1);
   };
 
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="py-20 px-4 bg-gradient-to-br from-gray-900/50 to-black/50 relative overflow-hidden"
-    >
-      <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/5 to-orange-500/5"></div>
-      
-      <div className="max-w-4xl mx-auto relative">
-        <div className="bg-gradient-to-br from-gray-900 to-black rounded-3xl border border-gray-800 p-8 md:p-12 shadow-2xl">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full mb-6">
-              <Music2 className="w-10 h-10 text-black" />
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+      {merchProducts.map((product) => (
+        <div key={product.id} className="group cursor-pointer">
+          <div className="aspect-[3/4] bg-gray-50 relative mb-4 overflow-hidden">
+            <div className="w-full h-full flex items-center justify-center bg-gray-100">
+              <span className="text-gray-400 text-sm">{product.name}</span>
             </div>
-            
-            <h2 className="text-4xl font-bold text-white mb-4">
-              Join the <span className="bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">Global Community</span>
-            </h2>
-            
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Be the first to access exclusive content, early releases, and VIP experiences worldwide.
-            </p>
-            
-            {/* Benefits Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              {[
-                { icon: '🎫', title: 'Early Access', desc: 'Concert tickets 48h before public' },
-                { icon: '💿', title: 'Exclusive Content', desc: 'Unreleased tracks & demos' },
-                { icon: '🎁', title: 'Member Perks', desc: 'Special discounts & gifts' }
-              ].map((benefit, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="bg-gray-900/50 rounded-xl p-6 border border-gray-800 hover:border-yellow-500/50 transition-colors"
-                >
-                  <div className="text-3xl mb-4">{benefit.icon}</div>
-                  <h4 className="text-yellow-500 font-bold mb-2">{benefit.title}</h4>
-                  <p className="text-gray-400 text-sm">{benefit.desc}</p>
-                </motion.div>
-              ))}
-            </div>
+            <button 
+              onClick={() => handleAddToCart(product)}
+              className="absolute bottom-4 left-4 right-4 bg-white text-black py-3 text-xs font-bold uppercase opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-black hover:text-white"
+            >
+              Add to cart
+            </button>
           </div>
-
-          <form onSubmit={handleSignUp} className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-3 text-left">
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="w-full px-5 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
-                  placeholder="Enter your full name"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-3 text-left">
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="w-full px-5 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
-                  placeholder="your.email@example.com"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-3 text-left">
-                  Your City
-                </label>
-                <input
-                  type="text"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  className="w-full px-5 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
-                  placeholder="Where are you based?"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-3 text-left">
-                  Country
-                </label>
-                <select
-                  name="country"
-                  value={formData.country}
-                  onChange={handleInputChange}
-                  className="w-full px-5 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent appearance-none cursor-pointer"
-                >
-                  <option value="GB">🇬🇧 United Kingdom</option>
-                  <option value="US">🇺🇸 United States</option>
-                  <option value="CA">🇨🇦 Canada</option>
-                  <option value="NG">🇳🇬 Nigeria</option>
-                  <option value="GH">🇬🇭 Ghana</option>
-                  <option value="KE">🇰🇪 Kenya</option>
-                  <option value="ZA">🇿🇦 South Africa</option>
-                  <option value="AU">🇦🇺 Australia</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-3 text-left">
-                Age (Optional)
-              </label>
-              <input
-                type="number"
-                name="age"
-                value={formData.age}
-                onChange={handleInputChange}
-                className="w-full px-5 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all"
-                placeholder="Your age"
-                min="1"
-                max="120"
-              />
-            </div>
-
-            <motion.button
-              type="submit"
-              disabled={isSubmitting}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-black py-5 rounded-xl font-bold text-lg hover:shadow-xl hover:shadow-yellow-500/30 transition-all duration-300 disabled:opacity-50"
-            >
-              {isSubmitting ? (
-                <span className="flex items-center justify-center gap-2">
-                  <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
-                  </svg>
-                  Processing...
-                </span>
-              ) : (
-                'Join VIP Community'
-              )}
-            </motion.button>
-
-            <p className="text-gray-500 text-sm text-center">
-              By joining, you agree to receive updates about new releases and exclusive offers. 
-              Unsubscribe anytime. We respect your privacy.
-            </p>
-          </form>
+          <h3 className="text-xs font-medium uppercase tracking-wider mb-1">{product.name}</h3>
+          <p className="text-xs font-bold">{product.price}</p>
         </div>
-      </div>
-    </motion.section>
+      ))}
+    </div>
   );
 }
 
-// Enhanced Promotional Modal
+// Updated PromotionalModal Component
 function PromotionalModal({ onClose }: { onClose: () => void }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-lg"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -924,249 +1621,44 @@ function PromotionalModal({ onClose }: { onClose: () => void }) {
         initial={{ scale: 0.9, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.9, opacity: 0, y: 20 }}
-        className="relative bg-gradient-to-br from-gray-900 via-gray-900 to-black rounded-2xl md:rounded-3xl w-full max-w-4xl max-h-[85vh] md:max-h-[80vh] overflow-hidden border border-yellow-500/20 shadow-2xl"
+        className="relative bg-white rounded-2xl w-full max-w-md max-h-[85vh] overflow-hidden border border-gray-200"
       >
-        {/* Luxury Metallic Border Effect */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -inset-[1px] bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 rounded-2xl md:rounded-3xl opacity-20"></div>
-          <div className="absolute inset-[1px] bg-gradient-to-br from-gray-900 via-gray-900 to-black rounded-2xl md:rounded-3xl"></div>
+        {/* Header */}
+        <div className="p-6 border-b border-gray-200">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-bold">Exclusive Access</h3>
+            <button 
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
         </div>
 
-        {/* Fixed Close Button - Always Visible */}
-        <button 
-          onClick={onClose}
-          className="fixed md:absolute top-4 right-4 md:top-6 md:right-6 z-50 p-3 bg-black/80 backdrop-blur-sm border border-gray-700 rounded-full hover:bg-black hover:border-yellow-500 transition-all duration-300 group shadow-xl"
-        >
-          <svg className="w-5 h-5 text-white group-hover:text-yellow-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
-          </svg>
-          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-500/0 to-yellow-500/0 group-hover:from-yellow-500/10 group-hover:to-yellow-500/10 transition-all duration-300"></div>
-        </button>
-
-        {/* Scrollable Content Container */}
-        <div className="relative h-full overflow-y-auto custom-scrollbar">
-          {/* Luxury Header Section */}
-          <div className="relative p-6 md:p-8 pt-12 md:pt-14 bg-gradient-to-b from-yellow-500/5 via-transparent to-transparent">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent"></div>
+        {/* Content */}
+        <div className="p-6">
+          <p className="text-gray-600 mb-6">
+            Join our VIP list for early access to new collections and exclusive offers.
+          </p>
+          
+          <form className="space-y-4">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+            />
             
-            <div className="text-center mb-8">
-              {/* Animated Glowing Badge */}
-              <motion.div
-                animate={{ 
-                  boxShadow: [
-                    "0 0 20px rgba(234, 179, 8, 0.3)",
-                    "0 0 40px rgba(234, 179, 8, 0.5)",
-                    "0 0 20px rgba(234, 179, 8, 0.3)"
-                  ]
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full border border-yellow-500/30 mb-6"
-              >
-                <Sparkles className="w-4 h-4 text-yellow-400" />
-                <span className="text-yellow-400 text-xs font-semibold tracking-widest uppercase">GLOBAL EXCLUSIVE</span>
-              </motion.div>
-              
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                Yoruba Healer{' '}
-                <span className="bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">
-                  Premium Access
-                </span>
-              </h2>
-              <p className="text-gray-400 text-sm md:text-base">World-class experiences for global fans</p>
-            </div>
-
-            {/* International Flags Badge */}
-            <div className="flex justify-center gap-2 mb-8">
-              {['🇺🇸', '🇬🇧', '🇳🇬', '🇨🇦', '🇦🇺', '🇫🇷', '🇩🇪', '🇯🇵'].map((flag, i) => (
-                <motion.div
-                  key={flag}
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: i * 0.05 }}
-                  className="text-xl hover:scale-110 transition-transform cursor-help"
-                  title="Available Worldwide"
-                >
-                  {flag}
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Scrollable Content Area */}
-          <div className="p-6 md:p-8 pt-0">
-            {/* Luxury Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
-              {[
-                {
-                  icon: '🎤',
-                  title: 'World Tour',
-                  subtitle: 'Global Experience',
-                  description: '30+ cities, VIP packages, meet & greet',
-                  color: 'from-yellow-500/20 to-orange-500/20',
-                  borderColor: 'border-yellow-500/30',
-                  badge: 'TICKETS'
-                },
-                {
-                  icon: '💿',
-                  title: 'Album Vol.2',
-                  subtitle: 'Collector\'s Edition',
-                  description: 'Limited vinyl + digital content',
-                  color: 'from-blue-500/20 to-cyan-500/20',
-                  borderColor: 'border-blue-500/30',
-                  badge: 'PRE-ORDER'
-                },
-                {
-                  icon: '✨',
-                  title: 'VIP Access',
-                  subtitle: 'Members Only',
-                  description: 'Exclusive drops & collaborations',
-                  color: 'from-purple-500/20 to-pink-500/20',
-                  borderColor: 'border-purple-500/30',
-                  badge: 'EXCLUSIVE'
-                }
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: i * 0.1 + 0.2 }}
-                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                  className={`group relative bg-gradient-to-br ${item.color} backdrop-blur-sm rounded-xl p-5 border ${item.borderColor} hover:shadow-xl hover:shadow-yellow-500/10 transition-all duration-300 cursor-pointer`}
-                >
-                  {/* Floating Badge */}
-                  <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-                    <span className="px-3 py-1 bg-black text-yellow-400 text-xs font-bold rounded-full border border-yellow-500/30">
-                      {item.badge}
-                    </span>
-                  </div>
-
-                  <div className="text-center">
-                    <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
-                      {item.icon}
-                    </div>
-                    
-                    <h4 className="text-white font-bold text-lg mb-1">{item.title}</h4>
-                    <p className="text-yellow-400 text-sm mb-2">{item.subtitle}</p>
-                    <p className="text-gray-300 text-xs mb-4">{item.description}</p>
-                    
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="w-full py-2.5 bg-black/50 border border-gray-700 text-white text-sm font-medium rounded-lg hover:border-yellow-500 hover:text-yellow-400 transition-all duration-300"
-                    >
-                      Learn More
-                    </motion.button>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Premium Features List */}
-            <div className="mb-8">
-              <h3 className="text-white font-bold text-lg mb-4 text-center">Global Benefits</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {[
-                  '🌍 Worldwide Shipping & Support',
-                  '🎫 Early Access to All Events',
-                  '📦 Free Shipping Over $150',
-                  '🎁 Exclusive Member Gifts',
-                  '💎 Limited Edition Products',
-                  '👑 VIP Priority Treatment'
-                ].map((feature, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: i * 0.05 + 0.5 }}
-                    className="flex items-center gap-3 px-4 py-3 bg-gray-900/50 rounded-lg border border-gray-800 hover:border-yellow-500/30 transition-colors"
-                  >
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                    <span className="text-gray-300 text-sm">{feature}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Testimonial */}
-            <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-xl p-5 mb-8 border border-yellow-500/20">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center">
-                  <span className="text-black font-bold">⭐</span>
-                </div>
-                <div>
-                  <div className="text-white font-bold">Global Fan Experience</div>
-                  <div className="text-yellow-400 text-xs">5,000+ Members Worldwide</div>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm italic">
-                "The premium access transformed my experience. Early tickets, exclusive merch, and worldwide community."
-              </p>
-              <div className="text-right text-xs text-gray-400 mt-2">— Sarah K., London</div>
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="space-y-4">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-black py-4 rounded-xl font-bold text-lg hover:shadow-xl hover:shadow-yellow-500/30 transition-all duration-300 flex items-center justify-center gap-3"
-              >
-                <Zap className="w-5 h-5" />
-                Join Global VIP List
-                <ArrowRight className="w-5 h-5" />
-              </motion.button>
-              
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={onClose}
-                className="w-full bg-transparent border-2 border-gray-700 text-gray-300 py-3.5 rounded-xl font-semibold hover:border-yellow-500 hover:text-yellow-400 transition-all duration-300"
-              >
-                Continue Exploring Store
-              </motion.button>
-            </div>
-
-            {/* Global Stats Footer */}
-            <div className="mt-8 pt-6 border-t border-gray-800/50">
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div>
-                  <div className="text-yellow-400 font-bold text-xl">50K+</div>
-                  <div className="text-gray-400 text-xs">Global Members</div>
-                </div>
-                <div>
-                  <div className="text-yellow-400 font-bold text-xl">60+</div>
-                  <div className="text-gray-400 text-xs">Countries</div>
-                </div>
-                <div>
-                  <div className="text-yellow-400 font-bold text-xl">4.9★</div>
-                  <div className="text-gray-400 text-xs">Rating</div>
-                </div>
-              </div>
-            </div>
-          </div>
+            <button
+              type="submit"
+              className="w-full bg-black text-white py-3 rounded-lg font-bold hover:bg-gray-800 transition-colors"
+            >
+              Subscribe
+            </button>
+          </form>
         </div>
-
-        {/* Add CSS for custom scrollbar */}
-        <style jsx global>{`
-          .custom-scrollbar {
-            scrollbar-width: thin;
-            scrollbar-color: rgba(234, 179, 8, 0.5) rgba(0, 0, 0, 0.1);
-          }
-          .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, rgba(234, 179, 8, 0.5), rgba(245, 158, 11, 0.5));
-            border-radius: 10px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(to bottom, rgba(234, 179, 8, 0.8), rgba(245, 158, 11, 0.8));
-          }
-        `}</style>
       </motion.div>
     </motion.div>
   );
@@ -1175,6 +1667,496 @@ function PromotionalModal({ onClose }: { onClose: () => void }) {
 
 
 
+
+
+// 'use client';
+
+// import { useState, useEffect } from 'react';
+// import Image from 'next/image';
+// import { useCart } from './context/CartContext';
+// import { useUser } from './context/UserContext';
+// import { motion, AnimatePresence } from 'framer-motion';
+// import { Heart, Sparkles, Truck, Lock, Verified, Zap, ShoppingBag, ChevronLeft, ChevronRight, ArrowRight, Search, User } from 'lucide-react';
+// import Footer from './components/Footer'; // We'll create this separately
+
+// interface Product {
+//   id: number;
+//   name: string;
+//   price: string;
+//   image: string;
+//   description: string;
+//   status: string;
+//   fullDescription: string;
+//   sizes?: string[];
+//   colors?: string[];
+//   category: string;
+//   rating: number;
+//   reviewCount: number;
+// }
+
+// export default function Home() {
+//   const { hasSignedUp, setHasSignedUp } = useUser();
+//   const { cart } = useCart();
+//   const [showPromoModal, setShowPromoModal] = useState(false);
+//   const [scrollProgress, setScrollProgress] = useState(0);
+  
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+//       const progress = (window.scrollY / totalScroll) * 100;
+//       setScrollProgress(progress);
+//     };
+
+//     window.addEventListener('scroll', handleScroll);
+//     return () => window.removeEventListener('scroll', handleScroll);
+//   }, []);
+
+//   return (
+//     <div className="min-h-screen bg-white font-sans">
+//       {/* Progress Bar */}
+//       <div className="fixed top-0 left-0 w-full h-1 bg-gray-100 z-50">
+//         <div 
+//           className="h-full bg-black"
+//           style={{ width: `${scrollProgress}%` }}
+//         />
+//       </div>
+
+//       {/* Hero Section */}
+//       <section className="relative h-[85vh] overflow-hidden group">
+//         <div className="absolute inset-0 hero-zoom">
+//           <Image
+//             src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTRpWsRwoZd9yZ6bM9wYZggDLCXp3_kUrZn2u_Dnbkehm2nPK4WUyKEm81WRThY31HF4uHHusullDSVDbzVAWc-7NY3q4OcwBi-updGcRl9HVMLCCc93B2m3itvZqDnaTN-qPWmtm3gbCTQ4JPkNB4I7di9niws-w3E0RX3t1gFGFOTVQVuFNPSGQFQqkm1Qf2MfA6xhhHcejGY37evOzP3gUSLb0Kvv6xfta2JPLGC8B07xMgftn0gxLxNCFCYZY4DMsyUWxNW2E"
+//             alt="Premium Streetwear Lifestyle"
+//             fill
+//             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+//             priority
+//           />
+//           <div className="absolute inset-0 bg-black/30"></div>
+//         </div>
+//         <div className="absolute inset-0 flex items-end pb-24 px-4 md:px-12">
+//           <div className="max-w-7xl mx-auto w-full">
+//             <p className="text-white text-xs font-bold uppercase tracking-[0.3em] mb-4">Just Landed</p>
+//             <h1 className="text-white text-5xl md:text-7xl font-bold uppercase mb-8 leading-none">
+//               New Arrivals<br/>Heritage Collection
+//             </h1>
+//             <a 
+//               href="/productlist.html" 
+//               className="inline-block bg-white text-black px-10 py-4 font-bold uppercase text-xs hover:bg-black hover:text-white transition-all duration-300"
+//             >
+//               Shop Now
+//             </a>
+//           </div>
+//         </div>
+//         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-3">
+//           <div className="w-2 h-2 rounded-full bg-white"></div>
+//           <div className="w-2 h-2 rounded-full bg-white/40"></div>
+//           <div className="w-2 h-2 rounded-full bg-white/40"></div>
+//         </div>
+//       </section>
+
+//       {/* Main Content */}
+//       <main className="max-w-7xl mx-auto px-4 py-16 space-y-24">
+//         {/* New Arrivals Section */}
+//         <section>
+//           <div className="flex justify-between items-end mb-8">
+//             <h2 className="text-2xl font-bold uppercase tracking-tight">New Arrivals</h2>
+//             <div className="flex items-center space-x-4">
+//               <button className="text-xs font-bold uppercase underline underline-offset-4">
+//                 View All
+//               </button>
+//               <div className="flex space-x-1">
+//                 <button className="p-1 border border-gray-200 hover:border-black transition-colors">
+//                   <ChevronLeft className="w-4 h-4" />
+//                 </button>
+//                 <button className="p-1 border border-gray-200 hover:border-black transition-colors">
+//                   <ChevronRight className="w-4 h-4" />
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+          
+//           <MerchSection />
+//         </section>
+
+//         {/* Categories Section */}
+//         <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+//           <div className="relative group overflow-hidden aspect-[4/5] bg-gray-50">
+//             <Image
+//               src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHXIvfxFx2CiPnpENTYZFzNai6TbNhdFKzyeqM_KkBqFeVBUNehSmxzX3zDB_SPo_P8tcwOY-yKNJIrpQQsNUjI0DiY0PI6U60HMgJDE_8hb1IfPuU_fNYUORaTcllOTDDqUFvwe85tGYjeynNroF4VWufiH_-_n2pvvOEq10ph-qRpI7E1HH2ZJ5vwVuVJopVG-CprFKNSkc1023vboAgEk6tD7NnLbfI2mK2ds64yAgAWlnpCPrZBWxL_9GDCB--0VAM-Z-jKgA"
+//               alt="Men's Collection"
+//               fill
+//               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+//             />
+//             <div className="absolute inset-0 bg-black/10"></div>
+//             <div className="absolute bottom-8 left-8">
+//               <h3 className="text-white text-2xl font-bold uppercase">Men</h3>
+//               <p className="text-white/80 text-[10px] uppercase mb-4 tracking-widest">Elevated Street Style</p>
+//               <button className="text-white text-xs font-bold border-b border-white pb-1 hover:border-gray-300 transition-colors">
+//                 Shop Now
+//               </button>
+//             </div>
+//           </div>
+          
+//           <div className="relative group overflow-hidden aspect-[4/5] bg-gray-50">
+//             <Image
+//               src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgTvqbYXrCz0kmJ_gqvvgEkYSzx0B2CLagaCHS_ljQjat83PeXec1eBIhkEKFd_epYlMAcrHajm0YJT7sffV27zDCww-U581Zd9qbj4HG2VdLt5qBEWCEgGFoTPHBQ9u-cBLxEzDq9C7qQVog5g7WByY1rmukbPah3X2_FwHkPn4YekNaqxZ6bRM57ClUJghwBoHtHWVmV7vFS7ky0YW_qgaTtmQV7t3EM_ZxAjMN_2KEB0ICvsBBYm-REGoRYwbibTRKdw6VvKmc"
+//               alt="Women's Collection"
+//               fill
+//               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+//             />
+//             <div className="absolute inset-0 bg-black/10"></div>
+//             <div className="absolute bottom-8 left-8">
+//               <h3 className="text-white text-2xl font-bold uppercase">Women</h3>
+//               <p className="text-white/80 text-[10px] uppercase mb-4 tracking-widest">Modern Femininity</p>
+//               <button className="text-white text-xs font-bold border-b border-white pb-1 hover:border-gray-300 transition-colors">
+//                 Shop Now
+//               </button>
+//             </div>
+//           </div>
+          
+//           <div className="relative group overflow-hidden aspect-[4/5] bg-gray-50">
+//             <Image
+//               src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6NYH4NiIFhq3IEc0tjR5-kPy5UOjn4CDAEWBuxRHThWAyx00UCyOtDbw_vHS6jPWh5P6Q6pY1UkysmQibb8-G5pZ0lKXrkirighkpyd4ChyyvimyJJoCT5czMzFK-EExFTzlmZEjCd3BE3wjJh61pWUEPNa0kL-tBwGydwOLTDofYR1VxuC6-pRCP5YbAGK2yikUFI9WXH0lC7cqzOan3EbJLoBMbaHJHX0m3WSFGX9egbxeeMwd0mdtYHCmDwPWdC1Uuholma8k"
+//               alt="Accessories"
+//               fill
+//               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+//             />
+//             <div className="absolute inset-0 bg-black/10"></div>
+//             <div className="absolute bottom-8 left-8">
+//               <h3 className="text-white text-2xl font-bold uppercase">Accessories</h3>
+//               <p className="text-white/80 text-[10px] uppercase mb-4 tracking-widest">Finish The Look</p>
+//               <button className="text-white text-xs font-bold border-b border-white pb-1 hover:border-gray-300 transition-colors">
+//                 Shop Now
+//               </button>
+//             </div>
+//           </div>
+//         </section>
+
+//         {/* Heritage Banner */}
+//         <section className="relative h-[600px] group overflow-hidden">
+//           <Image
+//             src="https://lh3.googleusercontent.com/aida-public/AB6AXuCE3vQO2tpRafXqrXuyC-9agZ3LnlbjFnKJ-TbCpsxMjGSLeHy6D3qN2Oi187LK59X0DOjTdWYBMhn273R8h9asGSf7N3JGlaAY72plTudyy2XFDFUkLVVRXu29LvxJwZeBeXUexKg1rYBwqz8VBputnRpfSjkbsQsR_CDXWTJZlm_n4m0oYXkXG1zmb3tRWqEwSEQPP2bnumNpoCHznnvzagQXN9Lwguevwyq_MLtB3AkjA0PcVyz1ikLQIO83hjrO6uIPF5efG9s"
+//             alt="Heritage Banner"
+//             fill
+//             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+//           />
+//           <div className="absolute inset-0 bg-black/20"></div>
+//           <div className="absolute left-12 bottom-12 max-w-md">
+//             <h2 className="text-white text-4xl font-bold uppercase mb-4 leading-none">The Heritage Manor</h2>
+//             <button className="inline-block bg-white text-black px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all duration-300">
+//               Explore Collection
+//             </button>
+//           </div>
+//         </section>
+
+//         {/* Styling Ideas Section */}
+//         <section>
+//           <div className="flex justify-between items-center mb-10">
+//             <h2 className="text-2xl font-bold uppercase">Styling Ideas</h2>
+//             <div className="flex space-x-2">
+//               <button className="w-10 h-10 border border-gray-200 flex items-center justify-center rounded-full hover:border-black transition-colors">
+//                 <ChevronLeft className="w-5 h-5" />
+//               </button>
+//               <button className="w-10 h-10 border border-gray-200 flex items-center justify-center rounded-full hover:border-black transition-colors">
+//                 <ChevronRight className="w-5 h-5" />
+//               </button>
+//             </div>
+//           </div>
+          
+//           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+//             <div className="md:col-span-1 relative h-[400px]">
+//               <Image
+//                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbyvW0J4mIkJeosBmlG2fwXkHvlOF8jB5yxB2no9_dWQH6HwETi28ciKKxwMDphnZV-weLNkEndR1BCpcSaH3e9pynZkKwkLOJXPIKu2evz7kG5bGJMXQsknU3i8PElIPYIUPBpe1usD--BKW_E-h2tFiFeSIcbJQsuIDrOhd0Vk-hkr6kH4HYbkJYwY6mD4_I67TQyPW7Eyhco5JXgk8FXD7BOsynaeqMjmzoz479oolxdjZ3RLIukBa8VugFytrx7RUfhK8lMj8"
+//                 alt="Lookbook"
+//                 fill
+//                 className="h-full w-full object-cover"
+//               />
+//               <button className="absolute bottom-6 left-6 bg-white px-6 py-3 text-[10px] font-bold uppercase hover:bg-black hover:text-white transition-colors duration-300">
+//                 Add To Cart
+//               </button>
+//             </div>
+            
+//             <div className="md:col-span-3 grid grid-cols-3 gap-4">
+//               <div className="space-y-4">
+//                 <div className="bg-gray-50 aspect-square p-8">
+//                   <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+//                     <Image
+//                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqeAITNAUXJD09qUu_8wgezoexexjWI1eul55Q3Trv1eASUQvPDYGJALXvja42VZz9HZWEWO188p9mS6cTBm4SGi14_5mouIUGATuks5PVZxngyULQLKtx2MrgvkB2yk8z7pLYUqxjajvyHxRhwZQECBrnkY_snaQqcEdrIjt7pWwcpmYO23ITgBH4NRwLP-fCdwQJZv2f8bzgj48ljzSKJzphLekWaRqafSfsTONhrpeoQ8BrFCtzLWoL0v0Feqn7qt0kNutmizM"
+//                       alt="Denim Jacket"
+//                       width={300}
+//                       height={300}
+//                       className="object-contain mix-blend-multiply"
+//                     />
+//                   </div>
+//                 </div>
+//                 <div>
+//                   <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Outerwear</p>
+//                   <h4 className="text-xs font-bold uppercase mt-1">Heritage Denim Jacket</h4>
+//                   <p className="text-xs mt-1">£250.00</p>
+//                 </div>
+//               </div>
+              
+//               <div className="space-y-4">
+//                 <div className="bg-gray-50 aspect-square p-8">
+//                   <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+//                     <Image
+//                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAaz5DU0hdo5dxyiXftkFxkqOGgaID974alFABPmNuZvR-iz8nXzEFMYXpfLEVUbx0hheltljBq_cNL08jO2a_YaWc9zl1_Jzr_WyssJLFqsIyp0vq11c1iroyDhtyCMby2_7SVLl5r53uiQJ6b-kviQTFvcn2k19OuYZGaP5PH0inaBPlqpJxZyig1BtnPMOwmONsjCpWjYehYqfkcvIG7ZNppAFxsv3Cc9znyiCWhEt-k3nqwXPTXVA2L3GseS7QrV1j-Of7xiE"
+//                       alt="T-Shirt"
+//                       width={300}
+//                       height={300}
+//                       className="object-contain mix-blend-multiply"
+//                     />
+//                   </div>
+//                 </div>
+//                 <div>
+//                   <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Essentials</p>
+//                   <h4 className="text-xs font-bold uppercase mt-1">Core Logo Tank</h4>
+//                   <p className="text-xs mt-1">£95.00</p>
+//                 </div>
+//               </div>
+              
+//               <div className="space-y-4">
+//                 <div className="bg-gray-50 aspect-square p-8">
+//                   <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+//                     <Image
+//                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGTvCw7J9_eFkMeKcoXI5U39xIU_ys9UMhdHL15Yv1KYisWhsRNQOQu3ICT8hu6uW0YNAfN0qIscIa0H74i9UfEsJfWkM5tIU8cWVAZ8e0WDuwtPlYI-NQPy0JCbW_cC6SqW0xJltKgzfquUgp68sQsDo6EvUtkp70ymU0bABafwke5b2TunIdwmVW-nGrJO5t4Qa0KADZRWcYrmytDeuosfifltMcZRAhO4SoFEt0mzLmuYbE6w8158ZHIJI6fGlB9unMeTegKrU"
+//                       alt="Pants"
+//                       width={300}
+//                       height={300}
+//                       className="object-contain mix-blend-multiply"
+//                     />
+//                   </div>
+//                 </div>
+//                 <div>
+//                   <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Bottoms</p>
+//                   <h4 className="text-xs font-bold uppercase mt-1">Signature Flare Pants</h4>
+//                   <p className="text-xs mt-1">£180.00</p>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </section>
+
+//         {/* Newsletter Section */}
+//         <section className="bg-gray-50 py-20 px-4 text-center">
+//           <h2 className="text-4xl font-bold uppercase mb-4 tracking-tight italic">Be First. Never Follow.</h2>
+//           <p className="text-xs text-gray-500 uppercase tracking-widest mb-10">
+//             Join our mailing list for exclusive drops and limited collections.
+//           </p>
+//           <form className="max-w-md mx-auto flex">
+//             <input 
+//               className="flex-1 bg-white border border-gray-200 px-6 py-4 text-xs outline-none focus:ring-0" 
+//               placeholder="email@example.com" 
+//               type="email"
+//             />
+//             <button className="bg-black text-white px-8 py-4 text-xs font-bold uppercase hover:bg-gray-800 transition-colors duration-300" type="submit">
+//               Subscribe
+//             </button>
+//           </form>
+//         </section>
+
+//         {/* Features Section */}
+//         <section className="grid grid-cols-2 md:grid-cols-4 gap-8 py-12 border-y border-gray-100">
+//           <div className="text-center space-y-3">
+//             <Verified className="w-8 h-8 mx-auto text-gray-600" />
+//             <h4 className="text-[10px] font-bold uppercase tracking-widest">Secured Payment</h4>
+//             <p className="text-[9px] text-gray-500 uppercase">Shop with peace of mind</p>
+//           </div>
+//           <div className="text-center space-y-3">
+//             <Truck className="w-8 h-8 mx-auto text-gray-600" />
+//             <h4 className="text-[10px] font-bold uppercase tracking-widest">Global Shipping</h4>
+//             <p className="text-[9px] text-gray-500 uppercase">Fast worldwide delivery</p>
+//           </div>
+//           <div className="text-center space-y-3">
+//             <Sparkles className="w-8 h-8 mx-auto text-gray-600" />
+//             <h4 className="text-[10px] font-bold uppercase tracking-widest">Live Support</h4>
+//             <p className="text-[9px] text-gray-500 uppercase">Real-time assistance</p>
+//           </div>
+//           <div className="text-center space-y-3">
+//             <Lock className="w-8 h-8 mx-auto text-gray-600" />
+//             <h4 className="text-[10px] font-bold uppercase tracking-widest">Easy Checkout</h4>
+//             <p className="text-[9px] text-gray-500 uppercase">One-click experience</p>
+//           </div>
+//         </section>
+//       </main>
+
+//       {/* Footer Component */}
+//       <Footer />
+
+//       {/* Promotional Modal */}
+//       {showPromoModal && (
+//         <PromotionalModal onClose={() => setShowPromoModal(false)} />
+//       )}
+//     </div>
+//   );
+// }
+
+// // Updated MerchSection Component with pounds and old product images
+// function MerchSection() {
+//   const { addToCart } = useCart();
+//   const [wishlist, setWishlist] = useState<number[]>([]);
+  
+//   const merchProducts: Product[] = [
+//     {
+//       id: 1,
+//       name: "Heritage Signet T-Shirt / Green",
+//       price: "£125.00",
+//       image: "/hoodie.jpg", // From old code
+//       description: "Premium hoodie with gold embroidery",
+//       status: "Pre-order",
+//       fullDescription: "Crafted from premium heavyweight cotton.",
+//       sizes: ["S", "M", "L", "XL", "XXL"],
+//       colors: ["Green"],
+//       category: "Apparel",
+//       rating: 4.9,
+//       reviewCount: 234
+//     },
+//     {
+//       id: 2,
+//       name: "Street Logo T-Shirt / Black",
+//       price: "£125.00",
+//       image: "/hoodie.jpg", // From old code
+//       description: "Classic cotton tee with exclusive artwork",
+//       status: "Pre-order",
+//       fullDescription: "100% premium cotton tee featuring exclusive artwork.",
+//       sizes: ["S", "M", "L", "XL"],
+//       colors: ["Black"],
+//       category: "Apparel",
+//       rating: 4.8,
+//       reviewCount: 189
+//     },
+//     {
+//       id: 3,
+//       name: "Graffiti Trucker Cap / Black",
+//       price: "£45.00",
+//       image: "/brondy.jpg", // From old code
+//       description: "Structured cap with metallic logo",
+//       status: "Pre-order",
+//       fullDescription: "Structured six-panel cap with metallic logo patch.",
+//       sizes: ["One Size"],
+//       colors: ["Black"],
+//       category: "Accessories",
+//       rating: 4.7,
+//       reviewCount: 156
+//     },
+//     {
+//       id: 4,
+//       name: "Modern Healer Tee / Neon",
+//       price: "£125.00",
+//       image: "/shortie.jpg", // From old code
+//       description: "Limited edition tee",
+//       status: "Pre-order",
+//       fullDescription: "Limited edition premium tee.",
+//       sizes: ["S", "M", "L", "XL"],
+//       colors: ["Neon"],
+//       category: "Apparel",
+//       rating: 5.0,
+//       reviewCount: 312
+//     },
+//   ];
+
+//   const toggleWishlist = (id: number) => {
+//     setWishlist(prev => 
+//       prev.includes(id) 
+//         ? prev.filter(item => item !== id)
+//         : [...prev, id]
+//     );
+//   };
+
+//   const handleAddToCart = (product: Product) => {
+//     addToCart({
+//       id: product.id,
+//       name: product.name,
+//       price: product.price,
+//       basePrice: parseFloat(product.price.replace('£', '')),
+//       shipping: 0,
+//       size: product.sizes?.[0] || '',
+//       color: product.colors?.[0] || '',
+//       image: product.image
+//     }, 1);
+//   };
+
+//   return (
+//     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+//       {merchProducts.map((product) => (
+//         <div key={product.id} className="group cursor-pointer">
+//           <div className="aspect-[3/4] bg-gray-50 relative mb-4 overflow-hidden">
+//             <div className="w-full h-full flex items-center justify-center bg-gray-100">
+//               <span className="text-gray-400 text-sm">{product.name}</span>
+//             </div>
+//             <button 
+//               onClick={() => handleAddToCart(product)}
+//               className="absolute bottom-4 left-4 right-4 bg-white text-black py-3 text-xs font-bold uppercase opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-black hover:text-white"
+//             >
+//               Add to cart
+//             </button>
+//           </div>
+//           <h3 className="text-xs font-medium uppercase tracking-wider mb-1">{product.name}</h3>
+//           <p className="text-xs font-bold">{product.price}</p>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// }
+
+// // Updated PromotionalModal Component
+// function PromotionalModal({ onClose }: { onClose: () => void }) {
+//   return (
+//     <motion.div
+//       initial={{ opacity: 0 }}
+//       animate={{ opacity: 1 }}
+//       exit={{ opacity: 0 }}
+//       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+//       onClick={(e) => {
+//         if (e.target === e.currentTarget) onClose();
+//       }}
+//     >
+//       <motion.div
+//         initial={{ scale: 0.9, opacity: 0, y: 20 }}
+//         animate={{ scale: 1, opacity: 1, y: 0 }}
+//         exit={{ scale: 0.9, opacity: 0, y: 20 }}
+//         className="relative bg-white rounded-2xl w-full max-w-md max-h-[85vh] overflow-hidden border border-gray-200"
+//       >
+//         {/* Header */}
+//         <div className="p-6 border-b border-gray-200">
+//           <div className="flex items-center justify-between">
+//             <h3 className="text-lg font-bold">Exclusive Access</h3>
+//             <button 
+//               onClick={onClose}
+//               className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+//             >
+//               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
+//               </svg>
+//             </button>
+//           </div>
+//         </div>
+
+//         {/* Content */}
+//         <div className="p-6">
+//           <p className="text-gray-600 mb-6">
+//             Join our VIP list for early access to new collections and exclusive offers.
+//           </p>
+          
+//           <form className="space-y-4">
+//             <input
+//               type="email"
+//               placeholder="Enter your email"
+//               className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+//             />
+            
+//             <button
+//               type="submit"
+//               className="w-full bg-black text-white py-3 rounded-lg font-bold hover:bg-gray-800 transition-colors"
+//             >
+//               Subscribe
+//             </button>
+//           </form>
+//         </div>
+//       </motion.div>
+//     </motion.div>
+//   );
+// }
 
 
 // 'use client';
