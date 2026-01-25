@@ -1703,8 +1703,17 @@ export default function Navbar() {
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-8">
-            <Link href="/" className="text-2xl font-bold tracking-tighter uppercase italic">
-              Yoruba Healer
+            {/* Logo Image */}
+            <Link href="/" className="flex items-center">
+              <div className="relative w-32 h-10 sm:w-40 sm:h-12">
+                <Image
+                  src="/yhimg.png"
+                  alt="Yoruba Healer"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
             </Link>
             
             <nav className="hidden lg:flex space-x-6 text-xs font-semibold uppercase tracking-widest">
