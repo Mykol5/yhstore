@@ -1619,24 +1619,34 @@
 //     </>
 //   );
 // }
-
-
-
 'use client';
 
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "../context/CartContext";
+import Image from "next/image";
+import Checkout from './Checkout'; // Make sure this path is correct
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ShoppingBag, Search, User, Menu } from "lucide-react";
+import { X, ShoppingBag, Search, User, Menu, Trash2, Plus, Minus, Shield, Truck } from "lucide-react";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const { cart, getTotalItems, getSubtotal } = useCart();
+  const { 
+    cart, 
+    getTotalItems, 
+    updateQuantity, 
+    removeFromCart,
+    clearCart,
+    getSubtotal,
+    getShippingTotal,
+    getGrandTotal
+  } = useCart();
   
   const cartItemsCount = getTotalItems();
   const subtotal = getSubtotal();
+  const shippingTotal = getShippingTotal();
+  const grandTotal = getGrandTotal();
   
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -1654,9 +1664,43 @@ export default function Navbar() {
     setIsCartOpen(false);
   };
 
+  const handleIncrement = (itemId: number, size?: string, color?: string) => {
+    const item = cart.find(item => 
+      item.id === itemId && 
+      item.size === size && 
+      item.color === color
+    );
+    if (item) {
+      updateQuantity(itemId, item.quantity + 1, size, color);
+    }
+  };
+
+  const handleDecrement = (itemId: number, size?: string, color?: string) => {
+    const item = cart.find(item => 
+      item.id === itemId && 
+      item.size === size && 
+      item.color === color
+    );
+    if (item) {
+      if (item.quantity > 1) {
+        updateQuantity(itemId, item.quantity - 1, size, color);
+      } else {
+        removeFromCart(itemId, size, color);
+      }
+    }
+  };
+
+  const handleRemove = (itemId: number, size?: string, color?: string) => {
+    removeFromCart(itemId, size, color);
+  };
+
+  const getCartItemKey = (item: any) => {
+    return `${item.id}-${item.size || 'no-size'}-${item.color || 'no-color'}`;
+  };
+
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-white/90 dark:bg-black/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
+      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-8">
             <Link href="/" className="text-2xl font-bold tracking-tighter uppercase italic">
@@ -1664,26 +1708,26 @@ export default function Navbar() {
             </Link>
             
             <nav className="hidden lg:flex space-x-6 text-xs font-semibold uppercase tracking-widest">
-              <Link href="/" className="hover:text-black dark:hover:text-white transition-colors">
+              <Link href="/" className="hover:text-black transition-colors">
                 New Arrivals
               </Link>
-              <Link href="/men" className="hover:text-black dark:hover:text-white transition-colors">
+              <Link href="/men" className="hover:text-black transition-colors">
                 Men
               </Link>
-              <Link href="/women" className="hover:text-black dark:hover:text-white transition-colors">
+              <Link href="/women" className="hover:text-black transition-colors">
                 Women
               </Link>
-              <Link href="/collections" className="hover:text-black dark:hover:text-white transition-colors">
+              <Link href="/collections" className="hover:text-black transition-colors">
                 Collections
               </Link>
-              <Link href="/lookbook" className="hover:text-black dark:hover:text-white transition-colors">
+              <Link href="/lookbook" className="hover:text-black transition-colors">
                 Lookbook
               </Link>
             </nav>
           </div>
           
           <div className="flex items-center space-x-6">
-            <div className="hidden md:flex items-center bg-gray-50 dark:bg-gray-900 px-3 py-1.5 rounded-sm">
+            <div className="hidden md:flex items-center bg-gray-50 px-3 py-1.5 rounded-sm">
               <Search className="w-4 h-4 text-gray-400" />
               <input 
                 className="bg-transparent border-none text-xs focus:ring-0 w-40 ml-2 outline-none" 
@@ -1694,7 +1738,7 @@ export default function Navbar() {
             
             <div className="flex items-center space-x-4">
               <button 
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                 aria-label="Account"
               >
                 <User className="w-5 h-5" />
@@ -1702,12 +1746,12 @@ export default function Navbar() {
               
               <button 
                 onClick={toggleCart}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors relative"
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors relative"
                 aria-label="Shopping Cart"
               >
                 <ShoppingBag className="w-5 h-5" />
                 {cartItemsCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-black dark:bg-white text-white dark:text-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                  <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
                     {cartItemsCount}
                   </span>
                 )}
@@ -1715,7 +1759,7 @@ export default function Navbar() {
               
               {/* Mobile menu button */}
               <button
-                className="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+                className="lg:hidden p-2 hover:bg-gray-100 rounded-md transition-colors"
                 onClick={toggleMobileMenu}
                 aria-label="Menu"
               >
@@ -1736,14 +1780,14 @@ export default function Navbar() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="lg:hidden overflow-hidden bg-white dark:bg-black border-t border-gray-100 dark:border-gray-800"
+              className="lg:hidden overflow-hidden bg-white border-t border-gray-100"
             >
               <div className="px-4 pt-2 pb-4 space-y-1">
                 {['New Arrivals', 'Men', 'Women', 'Collections', 'Lookbook'].map((item) => (
                   <Link
                     key={item}
                     href={`/${item.toLowerCase().replace(' ', '-')}`}
-                    className="block px-3 py-3 text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                    className="block px-3 py-3 text-sm font-medium hover:bg-gray-100 rounded-lg transition-colors"
                     onClick={closeMobileMenu}
                   >
                     {item}
@@ -1755,10 +1799,11 @@ export default function Navbar() {
         </AnimatePresence>
       </nav>
 
-      {/* Cart Sidebar */}
+      {/* White Themed Cart Sidebar */}
       <AnimatePresence>
         {isCartOpen && (
           <div className="fixed inset-0 z-50 overflow-hidden">
+            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -1767,82 +1812,233 @@ export default function Navbar() {
               onClick={closeCart}
             />
             
+            {/* Cart Panel */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              className="absolute right-0 top-0 h-full w-full max-w-md bg-white dark:bg-black shadow-xl"
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl overflow-hidden"
             >
               <div className="flex flex-col h-full">
                 {/* Header */}
-                <div className="p-6 border-b border-gray-200 dark:border-gray-800">
+                <div className="p-6 border-b border-gray-200">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-bold">Your Cart ({cartItemsCount})</h2>
-                    <button 
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-black rounded-lg">
+                        <ShoppingBag className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <h2 className="text-xl font-bold">
+                          Your Shopping Bag
+                          <span className="text-gray-600 ml-2">({cartItemsCount})</span>
+                        </h2>
+                        <p className="text-gray-500 text-sm">Premium Collection</p>
+                      </div>
+                    </div>
+                    
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
                       onClick={closeCart}
-                      className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-                      aria-label="Close Cart"
+                      className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                     >
                       <X className="w-5 h-5" />
-                    </button>
+                    </motion.button>
+                  </div>
+                  
+                  {/* Trust Badges */}
+                  <div className="flex items-center gap-4 mt-4">
+                    <div className="flex items-center gap-1 text-xs text-gray-500">
+                      <Shield className="w-3 h-3" />
+                      <span>Secure</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-xs text-gray-500">
+                      <Truck className="w-3 h-3" />
+                      <span>Global Shipping</span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Cart Items */}
-                <div className="flex-1 overflow-y-auto p-6">
+                {/* Cart Items - Scrollable Area */}
+                <div className="flex-1 overflow-y-auto p-4 md:p-6">
                   {cart.length === 0 ? (
+                    // Empty Cart State
                     <div className="h-full flex flex-col items-center justify-center py-12">
-                      <ShoppingBag className="w-16 h-16 text-gray-300 dark:text-gray-700 mb-4" />
-                      <h3 className="text-lg font-bold mb-2">Your cart is empty</h3>
-                      <p className="text-gray-500 text-center mb-8">
-                        Add items to get started
+                      <div className="relative mb-6">
+                        <ShoppingBag className="w-20 h-20 text-gray-300" />
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">Your bag is empty</h3>
+                      <p className="text-gray-500 text-center mb-8 max-w-sm">
+                        Add premium merchandise to experience the Yoruba Healer collection
                       </p>
                       <button
                         onClick={closeCart}
-                        className="bg-black dark:bg-white text-white dark:text-black px-6 py-3 text-sm font-medium hover:opacity-90 transition-opacity"
+                        className="bg-black text-white px-8 py-3 rounded-full font-bold hover:bg-gray-800 transition-all duration-300"
                       >
-                        Continue Shopping
+                        Explore Collection
                       </button>
                     </div>
                   ) : (
+                    // Cart Items List
                     <div className="space-y-4">
-                      {cart.map((item, index) => (
-                        <div key={`${item.id}-${item.size}-${item.color}-${index}`} className="flex items-center gap-4 p-4 border border-gray-100 dark:border-gray-800 rounded-lg">
-                          <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
-                            <ShoppingBag className="w-8 h-8 text-gray-400" />
+                      {cart.map((item) => (
+                        <motion.div
+                          key={getCartItemKey(item)}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          className="group relative bg-gray-50 rounded-lg p-4 border border-gray-200 hover:border-gray-300 transition-all duration-300"
+                        >
+                          {/* Delete Button - Top Right */}
+                          <motion.button
+                            whileHover={{ scale: 1.2 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => handleRemove(item.id, item.size, item.color)}
+                            className="absolute -top-2 -right-2 z-10 p-2 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg hover:bg-red-600"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </motion.button>
+
+                          <div className="flex items-center gap-4">
+                            {/* Product Image */}
+                            <div className="relative w-20 h-20 flex-shrink-0">
+                              {item.image ? (
+                                <div className="relative w-full h-full">
+                                  <Image
+                                    src={item.image}
+                                    alt={item.name}
+                                    fill
+                                    className="object-contain p-2 rounded-lg"
+                                  />
+                                </div>
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
+                                  <ShoppingBag className="w-8 h-8 text-gray-400" />
+                                </div>
+                              )}
+                              {/* Quantity Badge */}
+                              <div className="absolute -top-2 -left-2 bg-black text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center shadow-lg">
+                                {item.quantity}
+                              </div>
+                            </div>
+
+                            {/* Product Details */}
+                            <div className="flex-1 min-w-0 space-y-2">
+                              <div>
+                                <h4 className="font-bold text-sm md:text-base truncate pr-8">
+                                  {item.name}
+                                </h4>
+                                {(item.size || item.color) && (
+                                  <div className="flex flex-wrap gap-1 mt-1">
+                                    {item.size && (
+                                      <span className="px-2 py-0.5 bg-gray-200 text-gray-700 text-xs rounded-md">
+                                        {item.size}
+                                      </span>
+                                    )}
+                                    {item.color && (
+                                      <span className="px-2 py-0.5 bg-gray-200 text-gray-700 text-xs rounded-md">
+                                        {item.color}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Price and Controls Row */}
+                              <div className="flex items-center justify-between">
+                                {/* Price */}
+                                <div>
+                                  <p className="font-bold text-lg">
+                                    {item.price}
+                                  </p>
+                                </div>
+
+                                {/* Quantity Controls */}
+                                <div className="flex items-center gap-1 bg-white border border-gray-300 rounded-lg p-1">
+                                  <motion.button
+                                    whileTap={{ scale: 0.8 }}
+                                    onClick={() => handleDecrement(item.id, item.size, item.color)}
+                                    className="w-7 h-7 rounded-md flex items-center justify-center text-gray-600 hover:text-black hover:bg-gray-100 transition-colors"
+                                  >
+                                    <Minus className="w-3 h-3" />
+                                  </motion.button>
+                                  
+                                  <span className="font-medium text-sm w-6 text-center">
+                                    {item.quantity}
+                                  </span>
+                                  
+                                  <motion.button
+                                    whileTap={{ scale: 0.8 }}
+                                    onClick={() => handleIncrement(item.id, item.size, item.color)}
+                                    className="w-7 h-7 rounded-md flex items-center justify-center text-gray-600 hover:text-black hover:bg-gray-100 transition-colors"
+                                  >
+                                    <Plus className="w-3 h-3" />
+                                  </motion.button>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                          <div className="flex-1">
-                            <h4 className="font-medium text-sm">{item.name}</h4>
-                            <p className="text-gray-500 text-sm">Qty: {item.quantity}</p>
-                            <p className="font-bold mt-1">{item.price}</p>
-                          </div>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
                   )}
                 </div>
 
-                {/* Checkout Section */}
+                {/* Footer - Checkout Section */}
                 {cart.length > 0 && (
-                  <div className="border-t border-gray-200 dark:border-gray-800 p-6">
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium">Subtotal</span>
-                        <span className="font-bold">
-                          £{subtotal.toFixed(2)}
-                        </span>
+                  <div className="border-t border-gray-200">
+                    {/* Summary */}
+                    <div className="p-4 md:p-6 space-y-3">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-gray-600">Subtotal</span>
+                        <span className="font-bold">£{subtotal.toFixed(2)}</span>
                       </div>
                       
-                      <button className="w-full bg-black dark:bg-white text-white dark:text-black py-3 text-sm font-bold uppercase hover:opacity-90 transition-opacity">
-                        Proceed to Checkout
-                      </button>
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-gray-600">Shipping</span>
+                        <span className="text-black">£{shippingTotal.toFixed(2)}</span>
+                      </div>
+                      
+                      <div className="pt-3 border-t border-gray-200">
+                        <div className="flex justify-between items-center">
+                          <span className="text-lg font-bold">Total</span>
+                          <div className="text-right">
+                            <div className="text-2xl font-bold">
+                              £{grandTotal.toFixed(2)}
+                            </div>
+                            <p className="text-gray-500 text-xs">Including VAT</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="p-4 md:p-6 pt-0 space-y-3">
+                      <Checkout />
                       
                       <button
                         onClick={closeCart}
-                        className="w-full border border-gray-300 dark:border-gray-700 py-3 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                        className="w-full border-2 border-gray-300 py-3.5 rounded-xl font-semibold hover:border-black hover:bg-gray-50 transition-all duration-300"
                       >
                         Continue Shopping
                       </button>
+                      
+                      <button
+                        onClick={clearCart}
+                        className="w-full text-gray-500 hover:text-red-500 transition-colors text-sm py-2 flex items-center justify-center gap-2"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        Clear Entire Bag
+                      </button>
+                    </div>
+
+                    {/* Security Badge */}
+                    <div className="p-4 border-t border-gray-200">
+                      <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+                        <Shield className="w-4 h-4" />
+                        <span>Secure checkout • 256-bit encryption</span>
+                      </div>
                     </div>
                   </div>
                 )}

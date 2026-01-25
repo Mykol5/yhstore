@@ -1245,7 +1245,7 @@ export default function Home() {
               New Arrivals<br/>Heritage Collection
             </h1>
             <a 
-              href="/productlist.html" 
+              href="/product-list" 
               className="inline-block bg-white text-black px-10 py-4 font-bold uppercase text-xs hover:bg-black hover:text-white transition-all duration-300"
             >
               Shop Now
